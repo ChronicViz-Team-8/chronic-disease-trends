@@ -1,0 +1,12 @@
+Chronic liver disease mortality
+Asthma mortality rate
+Mortality due to diabetes reported as any listed cause of death
+Mortality with end-stage renal disease
+Mortality from total cardiovascular diseases
+Mortality from cerebrovascular disease (stroke)
+Current asthma prevalence among adults aged >= 18 years
+Obesity among adults aged >= 18 years
+Prevalence of chronic obstructive pulmonary disease among adults >= 18
+Prevalence of chronic kidney disease among adults aged >= 18 years
+Prevalence of diagnosed diabetes among adults aged >= 18 years
+Arthritis among adults aged >= 18 years
