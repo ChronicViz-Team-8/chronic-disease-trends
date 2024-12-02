@@ -7,28 +7,8 @@ class BarChartGender extends Component {
   }
 
   getModel() {
-    // Data Prep
     const data = this.props.data;
     const gender = ['Male', 'Female']
-    // const filteredData = data.filter(d => d.Question === 'Asthma mortality rate');
-    // console.log('barchart data: ', filteredData); // Delete
-    // const years = Array.from(new Set(filteredData.map(d => d.Year))).sort();
-    // const demographic = ['Male', 'Female'];
-
-    // const stackData = years.map(year => {
-    //   const row = { Year: year };
-
-    //   demographic.forEach(stratification => {
-    //     const stratValues = filteredData.filter(d => d.Year === year && d.Stratification === stratification);
-    //     const avg = stratValues.reduce((sum, d) => sum + d.Value, 0) / stratValues.length;
-
-    //     row[stratification] = avg;
-    //   })
-
-    //   return row;
-    // })
-
-    // console.log('Stack Data: ', stackData);
 
     // Setup SVG Environment
     const margin = { top: 50, bottom: 50, right: 50, left: 50 }
