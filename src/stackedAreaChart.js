@@ -8,31 +8,8 @@ class StackedAreaChart extends Component {
   }
 
   getModel() {
-    // Data Prep (may remove and handle this within App.js)
     const data = this.props.data;
-    const mortalityData = data.filter(d => 
-      d.Question.toLowerCase().includes('mortality')
-    );
-    // console.log('mortalityData: ', mortalityData); // Delete
-
-    const groupByQuestion = d3.group(mortalityData, d => d.Question);
-    // console.log('Grouped by Question Data: ', groupByQuestion); // Delete
-
-    // Data Prep for Stacking
-    const years = Array.from(new Set(mortalityData.map(d => d.Year))).sort();
-    // console.log('Years: ', years); // Delete
-
-    const stackData = years.map(year => {
-      const row = { Year: year };
-      groupByQuestion.forEach((values, question) => {
-        const curYearVal = values.filter(v => v.Year === year);
-        const average = curYearVal.reduce((sum, v) => sum + v.Value, 0) / curYearVal.length;
-        row[question] = average;
-      })
-      return row;
-    });
-
-    console.log('Stack Data: ', stackData);
+    const questions = this.props.questions;
 
     // SVG Setup
     const margin = { top: 50, bottom: 50, right: 50, left: 50 }
@@ -49,14 +26,14 @@ class StackedAreaChart extends Component {
 
     // Create Generators
     const stackGen = d3.stack()
-      .keys(Array.from(groupByQuestion.keys()))
+      .keys(questions)
 
-    const stackedSeries = stackGen(stackData);
+    const stackedSeries = stackGen(data);
     console.log('Stacked Series Data: ', stackedSeries)
 
     // Scales
     const xScale = d3.scaleLinear()
-      .domain(d3.extent(stackData, d => d.Year))
+      .domain(d3.extent(data, d => d.Year))
       .range([0, innerWidth]);
   
     const yScale = d3
@@ -65,7 +42,7 @@ class StackedAreaChart extends Component {
       .range([innerHeight, 0]);
 
     const colorScale = d3.scaleOrdinal()
-      .domain(Array.from(groupByQuestion.keys()))
+      .domain(questions)
       .range(['#ea8d4e', '#e06153', '#916fdf', '#37b99c', '#e0b448', '#b8c148']);
 
     // Area Generator

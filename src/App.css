@@ -26,16 +26,30 @@
   height: 357px;
 }
 #stacked-area-chart-box{
+  display: flex;
+  justify-content: space-between;
   width: 752px;
   height: 357px;
 }
+#dropdown-stacked-area{
+  margin-top: 10px;
+  margin-right: 10px;
+}
 #stacked-barchart-box{
+  display: flex;
+  flex-direction: column;
   width: 900px;
   height: 357px;
+  gap: 5px;
+}
+#dropdown-stacked-bar{
+  margin-left: 5px;
+  margin-top: 5px;
 }
 #barchart-row{
   display: flex;
   flex-direction: row;
+  margin-top: -47px;
 }
 #treemap-box{
   width: 604px;
