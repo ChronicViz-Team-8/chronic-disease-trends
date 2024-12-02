@@ -5,21 +5,34 @@
   background-color: #364953;
   margin: 0;
   padding: 5px;
-  width: 752;
+  width: 100%;
 }
 #header h1{
   color: #ffffff;
 }
+#container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: calc(100vh - 10px);
+  box-sizing: border-box;
+}
 .row-model{
   display: flex;
   flex-direction: row;
+  gap: 10px;
+  padding: 10px;
+  box-sizing: border-box;
 }
 .model-box{
   background-color: #ffffff;
-  margin-top: 10px;
-  margin-left: 10px; 
+  flex: 1;
   display: flex;
   flex-direction: row;
+  height: auto;
+  min-height: 357px;
+  box-sizing: border-box;
+  padding: 10px; 
 }
 .dropdown-row {
   display: flex;
@@ -28,15 +41,16 @@
   width: 100%;
   margin: 10px;
 }
-#line-chart-box{
-  width: 752px;
-  height: 357px;
+#line-chart-box, 
+#stacked-area-chart-box, 
+#stacked-barchart-box, 
+#treemap-box {
+  flex: 1;
+  box-sizing: border-box;
 }
 #stacked-area-chart-box{
   display: flex;
   justify-content: space-between;
-  width: 752px;
-  height: 357px;
 }
 #dropdown-stacked-area{
   margin-top: 10px;
@@ -45,9 +59,7 @@
 #stacked-barchart-box{
   display: flex;
   flex-direction: column;
-  width: 900px;
-  height: 357px;
-  gap: 5px;
+  flex: 59%;
 }
 #dropdown-stacked-bar{
   margin-left: 5px;
@@ -59,6 +71,5 @@
   margin-top: -47px;
 }
 #treemap-box{
-  width: 604px;
-  height: 357px;
+  flex: 40%;
 }

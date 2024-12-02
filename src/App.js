@@ -159,7 +159,7 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <div id='container'>
         <div id='header'>
           <h1>Chronic Disease Trends</h1>
         </div>
