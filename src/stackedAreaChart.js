@@ -57,7 +57,7 @@ class StackedAreaChart extends Component {
       .join('g')
       .attr('class', 'x-axis')
       .attr('transform', `translate(0, ${innerHeight})`)
-      .call(d3.axisBottom(xScale));
+      .call(d3.axisBottom(xScale).tickFormat(d3.format('d')));
 
     svg.selectAll('.y-axis')
       .data([0])
