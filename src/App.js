@@ -4,8 +4,9 @@ import * as d3 from 'd3';
 import { Box, MenuItem, Select } from '@mui/material';
 import chronic from './cleaned_chronic_disease_indicators.csv'
 import LineChart from './lineChart';
-import StackedChart from './stackedChart';
-import BarChart from './barChart';
+import StackedAreaChart from './stackedAreaChart';
+import BarChartRace from './barChartRace';
+import BarChartGender from './barChartGender';
 import Treemap from './treemap';
 
 class App extends Component {
@@ -44,12 +45,15 @@ class App extends Component {
             <LineChart data={this.state.data}></LineChart>
           </Box>
           <Box className='model-box' id='stacked-area-chart-box' sx={{ boxShadow: 3 }}>
-            {/* <StackedChart data={this.state.data}></StackedChart> */}
+            <StackedAreaChart data={this.state.data}></StackedAreaChart>
           </Box>
         </div>
         <div className='row-model'>
           <Box className='model-box' id='stacked-barchart-box' sx={{ boxShadow: 3 }}>
-            {/* <BarChart data={this.state.data}></BarChart> */}
+            <div id='barchart-row'>
+              <BarChartRace data={this.state.data}></BarChartRace>
+              <BarChartGender data={this.state.data}></BarChartGender>
+            </div>
           </Box>
           <Box className='model-box' id='treemap-box' sx={{ boxShadow: 3 }}>
             <Treemap data={this.state.data}></Treemap>

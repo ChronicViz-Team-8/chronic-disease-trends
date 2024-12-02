@@ -18,6 +18,8 @@
   background-color: #ffffff;
   margin-top: 10px;
   margin-left: 10px; 
+  display: flex;
+  flex-direction: row;
 }
 #line-chart-box{
   width: 752px;
@@ -30,6 +32,10 @@
 #stacked-barchart-box{
   width: 900px;
   height: 357px;
+}
+#barchart-row{
+  display: flex;
+  flex-direction: row;
 }
 #treemap-box{
   width: 604px;

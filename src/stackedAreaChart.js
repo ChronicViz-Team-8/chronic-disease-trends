@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
 
-class StackedChart extends Component {
+class StackedAreaChart extends Component {
   componentDidUpdate() {
     // console.log("Stream Chart Data: ", this.props.data);
     this.getModel();
@@ -36,8 +36,8 @@ class StackedChart extends Component {
 
     // SVG Setup
     const margin = { top: 50, bottom: 50, right: 50, left: 50 }
-    const width = 700;
-    const height = 600;
+    const width = 450;
+    const height = 350;
     const innerWidth = width - margin.right - margin.left;
     const innerHeight = height - margin.top - margin.bottom;
 
@@ -66,7 +66,7 @@ class StackedChart extends Component {
 
     const colorScale = d3.scaleOrdinal()
       .domain(Array.from(groupByQuestion.keys()))
-      .range(d3.schemeCategory10);
+      .range(['#ea8d4e', '#e06153', '#916fdf', '#37b99c', '#e0b448', '#b8c148']);
 
     // Area Generator
     const areaGen = d3.area()
@@ -111,4 +111,4 @@ class StackedChart extends Component {
   }
 }
 
-export default StackedChart;
+export default StackedAreaChart;

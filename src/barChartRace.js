@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
 
-class BarChart extends Component {
+class BarChartRace extends Component {
   componentDidUpdate() {
     this.getModel();
   }
@@ -13,8 +13,8 @@ class BarChart extends Component {
     console.log('barchart data: ', filteredData); // Delete
     const years = Array.from(new Set(filteredData.map(d => d.Year))).sort();
 
-    const demographic = ['Male', 'Female'];
-    // const demographic = ['Black, non-Hispanic', 'White, non-Hispanic', 'Hispanic', 'Other, non-Hispanic'];
+    // const demographic = ['Male', 'Female'];
+    const demographic = ['Black, non-Hispanic', 'White, non-Hispanic', 'Hispanic', 'Other, non-Hispanic'];
 
     const stackData = years.map(year => {
       const row = { Year: year };
@@ -33,12 +33,12 @@ class BarChart extends Component {
 
     // Setup SVG Environment
     const margin = { top: 50, bottom: 50, right: 50, left: 50 }
-    const width = 700;
-    const height = 600;
+    const width = 450;
+    const height = 350;
     const innerWidth = width - margin.right - margin.left;
     const innerHeight = height - margin.top - margin.bottom;
 
-    const svg = d3.select('#bar-chart')
+    const svg = d3.select('#barchart-race')
       .attr('width', width)
       .attr('height', height)
       .select('g')
@@ -56,7 +56,7 @@ class BarChart extends Component {
 
     const colorScale = d3.scaleOrdinal()
       .domain(demographic)
-      .range(['#7EC8E3', '#F5A3C7']);
+      .range(['#4472c4', '#f1b7a3', '#c5e0b4', '#c8a7ed']);
 
     // Axis
     svg.selectAll('.x-axis')
@@ -100,7 +100,7 @@ class BarChart extends Component {
   render() {
     return(
       <div>
-        <svg id='bar-chart'>
+        <svg id='barchart-race'>
           <g></g>
         </svg>
       </div>
@@ -108,4 +108,4 @@ class BarChart extends Component {
   }
 }
 
-export default BarChart;
+export default BarChartRace;
