@@ -165,6 +165,47 @@ class App extends Component {
         </div>
         <div className='row-model'>
           <Box className='model-box' id='line-chart-box' sx={{ boxShadow: 3 }}>
+            <div className='dropdown-row'>
+              <FormControl id='dropdown-chronic-selection-linechart' sx={{ width: '250px' }}>
+                <InputLabel>Select Chronic Disease</InputLabel>
+                <Select
+                  label="Select Chronic Disease"
+                  MenuProps={{
+                    PaperProps: {
+                      style: {
+                        maxHeight: 200,
+                        overflow: 'auto',
+                      },
+                    },
+                  }}
+                >
+                  <MenuItem value={'Arthritis (Prevalence)'}>Arthritis (Prevalence)</MenuItem>
+                  <MenuItem value={'Asthma (Mortality Rate)'}>Asthma (Mortality Rate)</MenuItem>
+                  <MenuItem value={'Asthma (Prevalence)'}>Asthma (Prevalence)</MenuItem>
+                  <MenuItem value={'COPD (Prevalence)'}>COPD (Prevalence)</MenuItem>
+                  <MenuItem value={'Cardiovascular Disease (Mortality Rate)'}>Cardiovascular Disease (Mortality Rate)</MenuItem>
+                  <MenuItem value={'Chronic Liver Disease (Mortality Rate)'}>Chronic Liver Disease (Mortality Rate)</MenuItem>
+                  <MenuItem value={'Diabetes (Mortality Rate)'}>Diabetes (Mortality Rate)</MenuItem>
+                  <MenuItem value={'Diabetes (Prevalence)'}>Diabetes (Prevalence)</MenuItem>
+                  <MenuItem value={'End-Stage Renal Disease (Mortality Rate)'}>End-Stage Renal Disease (Mortality Rate)</MenuItem>
+                  <MenuItem value={'Kidney Disease (Prevalence)'}>Kidney Disease (Prevalence)</MenuItem>
+                  <MenuItem value={'Obesity (Prevalence)'}>Obesity (Prevalence)</MenuItem>
+                  <MenuItem value={'Stroke (Mortality Rate)'}>Stroke (Mortality Rate)</MenuItem>
+                </Select>
+              </FormControl>
+              <FormControl id='dropdown-line-selection-linechart' sx={{ width: '200px' }}>
+                <InputLabel>Add a Line</InputLabel>
+                <Select label="Add a Line">
+                  <MenuItem value={'Male'}>Male</MenuItem>
+                  <MenuItem value={'Female'}>Female</MenuItem>
+                  <MenuItem value={'White, non-Hispanic'}>White, non-Hispanic</MenuItem>
+                  <MenuItem value={'Black, non-Hispanic'}>Black, non-Hispanic</MenuItem>
+                  <MenuItem value={'Hispanic'}>Hispanic</MenuItem>
+                  <MenuItem value={'Other, non-Hispanic'}>Other, non-Hispanic</MenuItem>
+                  <MenuItem value={'U.S. Regions'}>U.S. Regions</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
             <LineChart data={this.state.data}></LineChart>
           </Box>
           <Box className='model-box' id='stacked-area-chart-box' sx={{ boxShadow: 3 }}>
@@ -215,6 +256,30 @@ class App extends Component {
             </div>
           </Box>
           <Box className='model-box' id='treemap-box' sx={{ boxShadow: 3 }}>
+            <div className='dropdown-row'>
+              <FormControl id='dropdown-metric-treemap' sx={{ width: '200px' }}>
+                <InputLabel>Select a Metric</InputLabel>
+                <Select label="Select a Metric">
+                  <MenuItem value={'Prevalence'}>Prevalence</MenuItem>
+                  <MenuItem value={'Mortality Rate'}>Mortality Rate</MenuItem>
+                </Select>
+              </FormControl>
+              <FormControl id='dropdown-metric-treemap' sx={{ width: '200px' }}>
+                <InputLabel>Select a Year</InputLabel>
+                <Select label="Select a Year">
+                  <MenuItem value={2011}>2011</MenuItem>
+                  <MenuItem value={2012}>2012</MenuItem>
+                  <MenuItem value={2013}>2013</MenuItem>
+                  <MenuItem value={2014}>2014</MenuItem>
+                  <MenuItem value={2015}>2015</MenuItem>
+                  <MenuItem value={2016}>2016</MenuItem>
+                  <MenuItem value={2017}>2017</MenuItem>
+                  <MenuItem value={2018}>2018</MenuItem>
+                  <MenuItem value={2019}>2019</MenuItem>
+                  <MenuItem value={2020}>2020</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
             <Treemap data={this.state.data}></Treemap>
           </Box>
         </div>

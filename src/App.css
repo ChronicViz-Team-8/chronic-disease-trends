@@ -21,6 +21,13 @@
   display: flex;
   flex-direction: row;
 }
+.dropdown-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  margin: 10px;
+}
 #line-chart-box{
   width: 752px;
   height: 357px;
