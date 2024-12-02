@@ -16,7 +16,10 @@ class App extends Component {
       data:[],
       stackedAreaData: [],
       stackedAreaQuestions: [],
-      selectedStackMetric: ''
+      selectedStackMetric: '',
+      barChartGenderData: [],
+      barChartRaceData: [],
+      selectedBarOption: '',
     };
   }
 
@@ -71,6 +74,89 @@ class App extends Component {
     this.setState({ stackedAreaQuestions: Array.from(groupByQuestion.keys())})
   }
 
+  handleStackBarChange = (event) => {
+    var question;
+    const selection = event.target.value;
+    const race = ['Black, non-Hispanic', 'White, non-Hispanic', 'Hispanic', 'Other, non-Hispanic'];
+    const gender = ['Male', 'Female'];
+
+    switch(selection) {
+      case 'Arthritis (Prevalence)':
+        question = 'Arthritis among adults aged >= 18 years';
+        break;
+      case 'Asthma (Mortality Rate)':
+        question = 'Asthma mortality rate';
+        break;
+      case 'Asthma (Prevalence)':
+        question = 'Current asthma prevalence among adults aged >= 18 years';
+        break;
+      case 'COPD (Prevalence)':
+        question = 'Prevalence of chronic obstructive pulmonary disease among adults >= 18';
+        break;
+      case 'Cardiovascular Disease (Mortality Rate)':
+        question = 'Mortality from total cardiovascular diseases';
+        break;
+      case 'Chronic Liver Disease (Mortality Rate)':
+        question = 'Chronic liver disease mortality';
+        break;
+      case 'Diabetes (Mortality Rate)':
+        question = 'Mortality due to diabetes reported as any listed cause of death';
+        break;
+      case 'Diabetes (Prevalence)':
+        question = 'Prevalence of diagnosed diabetes among adults aged >= 18 years';
+        break;
+      case 'End-Stage Renal Disease (Mortality Rate)':
+        question = 'Mortality with end-stage renal disease';
+        break;
+      case 'Kidney Disease (Prevalence)':
+        question = 'Prevalence of chronic kidney disease among adults aged >= 18 years';
+        break;
+      case 'Obesity (Prevalence)':
+        question = 'Obesity among adults aged >= 18 years';
+        break;
+      case 'Stroke (Mortality Rate)':
+        question = 'Mortality from cerebrovascular disease (stroke)';
+        break;
+      default:
+        break;
+    };
+
+    const filteredData = this.state.data.filter(d => d.Question === question);
+    const years = Array.from(new Set(filteredData.map(d => d.Year))).sort();
+
+    const barRaceData = years.map(year => {
+      const row = { Year: year };
+
+      race.forEach(stratification => {
+        const stratValues = filteredData.filter(d => d.Year === year && d.Stratification === stratification);
+        const avg = stratValues.reduce((sum, d) => sum + d.Value, 0) / stratValues.length;
+
+        row[stratification] = avg;
+      })
+
+      return row;
+    });
+    console.log('Bar Race Data: ', barRaceData);
+
+    const barGenderData = years.map(year => {
+      const row = { Year: year };
+
+      gender.forEach(stratification => {
+        const stratValues = filteredData.filter(d => d.Year === year && d.Stratification === stratification);
+        const avg = stratValues.reduce((sum, d) => sum + d.Value, 0) / stratValues.length;
+
+        row[stratification] = avg;
+      })
+
+      return row;
+    });
+    console.log('Bar Gender Data: ', barGenderData);
+
+    this.setState({ barChartGenderData: barGenderData });
+    this.setState({ barChartRaceData: barRaceData });
+    this.setState({ selectedBarOption:  event.target.value})
+  }
+
   render() {
     return (
       <div>
@@ -98,6 +184,8 @@ class App extends Component {
               <InputLabel>Select Chronic Disease</InputLabel>
               <Select
                 label="Select Chronic Disease"
+                onChange={this.handleStackBarChange}
+                value={this.stateBarOption}
                 MenuProps={{
                   PaperProps: {
                     style: {
@@ -122,8 +210,8 @@ class App extends Component {
               </Select>
             </FormControl>
             <div id='barchart-row'>
-              {/* <BarChartRace data={this.state.data}></BarChartRace> */}
-              {/* <BarChartGender data={this.state.data}></BarChartGender> */}
+              <BarChartRace data={this.state.barChartRaceData}></BarChartRace>
+              <BarChartGender data={this.state.barChartGenderData}></BarChartGender>
             </div>
           </Box>
           <Box className='model-box' id='treemap-box' sx={{ boxShadow: 3 }}>

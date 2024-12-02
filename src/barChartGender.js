@@ -9,27 +9,26 @@ class BarChartGender extends Component {
   getModel() {
     // Data Prep
     const data = this.props.data;
-    const filteredData = data.filter(d => d.Question === 'Asthma mortality rate');
-    console.log('barchart data: ', filteredData); // Delete
-    const years = Array.from(new Set(filteredData.map(d => d.Year))).sort();
+    const gender = ['Male', 'Female']
+    // const filteredData = data.filter(d => d.Question === 'Asthma mortality rate');
+    // console.log('barchart data: ', filteredData); // Delete
+    // const years = Array.from(new Set(filteredData.map(d => d.Year))).sort();
+    // const demographic = ['Male', 'Female'];
 
-    const demographic = ['Male', 'Female'];
-    // const demographic = ['Black, non-Hispanic', 'White, non-Hispanic', 'Hispanic', 'Other, non-Hispanic'];
+    // const stackData = years.map(year => {
+    //   const row = { Year: year };
 
-    const stackData = years.map(year => {
-      const row = { Year: year };
+    //   demographic.forEach(stratification => {
+    //     const stratValues = filteredData.filter(d => d.Year === year && d.Stratification === stratification);
+    //     const avg = stratValues.reduce((sum, d) => sum + d.Value, 0) / stratValues.length;
 
-      demographic.forEach(stratification => {
-        const stratValues = filteredData.filter(d => d.Year === year && d.Stratification === stratification);
-        const avg = stratValues.reduce((sum, d) => sum + d.Value, 0) / stratValues.length;
+    //     row[stratification] = avg;
+    //   })
 
-        row[stratification] = avg;
-      })
+    //   return row;
+    // })
 
-      return row;
-    })
-
-    console.log('Stack Data: ', stackData);
+    // console.log('Stack Data: ', stackData);
 
     // Setup SVG Environment
     const margin = { top: 50, bottom: 50, right: 50, left: 50 }
@@ -46,7 +45,7 @@ class BarChartGender extends Component {
 
     // Scales
     const xScale = d3.scaleBand()
-      .domain(years)
+      .domain(['2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020'])
       .range([0, innerWidth])
       .padding(0.2);
 
@@ -55,7 +54,7 @@ class BarChartGender extends Component {
       .range([innerHeight, 0]);
 
     const colorScale = d3.scaleOrdinal()
-      .domain(demographic)
+      .domain(gender)
       .range(['#7EC8E3', '#F5A3C7']);
 
     // Axis
@@ -74,10 +73,10 @@ class BarChartGender extends Component {
 
     // Generators
     const stackGen = d3.stack()
-      .keys(demographic)
+      .keys(gender)
       .offset(d3.stackOffsetExpand);
     
-    const stackedSeries = stackGen(stackData);
+    const stackedSeries = stackGen(data);
 
     // Create Bars
     svg.selectAll('.bars')
