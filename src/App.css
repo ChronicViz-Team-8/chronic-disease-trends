@@ -1,0 +1,37 @@
+#header{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #364953;
+  margin: 0;
+  padding: 5px;
+  width: 752;
+}
+#header h1{
+  color: #ffffff;
+}
+.row-model{
+  display: flex;
+  flex-direction: row;
+}
+.model-box{
+  background-color: #ffffff;
+  margin-top: 10px;
+  margin-left: 10px; 
+}
+#line-chart-box{
+  width: 752px;
+  height: 357px;
+}
+#stacked-area-chart-box{
+  width: 752px;
+  height: 357px;
+}
+#stacked-barchart-box{
+  width: 900px;
+  height: 357px;
+}
+#treemap-box{
+  width: 604px;
+  height: 357px;
+}

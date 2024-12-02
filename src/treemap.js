@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
 
-class LineChart extends Component {
+class Treemap extends Component {
   componentDidUpdate() {
   }
 
@@ -10,4 +10,4 @@ class LineChart extends Component {
   }
 }
 
-export default LineChart;
+export default Treemap;
