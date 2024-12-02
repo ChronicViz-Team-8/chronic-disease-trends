@@ -1,0 +1,14 @@
+Liver Disease: #1f77b4 (blue)
+Asthma: #ff7f0e (orange)
+End-stage Renal (Kidney): #2ca02c (green)
+Total Cardiovascular: #d62728 (red)
+Stroke: #9467bd (purple)
+Diabetes: #8c564b (brown)
+
+male: #7EC8E3 (light blue)
+femlae: #F5A3C7 (light pink)
+
+Black, non-Hispanic:  #4472c4 (blue)
+White, non-Hispanic:  #f1b7a3 (beige)
+Hispanic:  #c5e0b4 (green)
+Other, non-Hispanic:  #c8a7ed (some shade of pink mixed with purple)

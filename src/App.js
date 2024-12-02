@@ -36,7 +36,7 @@ class App extends Component {
       <div>
         <div id='models'>
           <LineChart data={this.state.data}></LineChart>
-          <StackedChart data={this.state.data}></StackedChart>
+          {/* <StackedChart data={this.state.data}></StackedChart> */}
           <BarChart data={this.state.data}></BarChart>
         </div>
       </div>
