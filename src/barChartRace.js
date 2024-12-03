@@ -106,7 +106,7 @@ class BarChartRace extends Component {
       .join('text')
       .attr('class', 'y-label')
       .attr('transform', `translate(-40, ${innerHeight / 2}), rotate(-90)`)
-      .text('Rate')
+      .text(this.props.ylabel)
       .attr('text-anchor', 'middle')
       .style('font-weight', 'bold')
 

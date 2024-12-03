@@ -20,6 +20,7 @@ class App extends Component {
       barChartGenderData: [],
       barChartRaceData: [],
       selectedBarOption: '',
+      yAxisLabel: 'Rate',
     };
   }
 
@@ -120,6 +121,13 @@ class App extends Component {
       default:
         break;
     };
+
+    // Dynamically adjust the y-axis labels for the bar charts
+    if (selection.includes('Prevalence')) {
+      this.setState({yAxisLabel: 'Prevalence Rate'})
+    } else if (selection.includes('Mortality')) {
+      this.setState({yAxisLabel: 'Mortality Rate'})
+    }
 
     const filteredData = this.state.data.filter(d => d.Question === question);
     const years = Array.from(new Set(filteredData.map(d => d.Year))).sort();
@@ -268,8 +276,8 @@ class App extends Component {
               </Select>
             </FormControl>
             <div id='barchart-row'>
-              <BarChartRace data={this.state.barChartRaceData}></BarChartRace>
-              <BarChartGender data={this.state.barChartGenderData}></BarChartGender>
+              <BarChartRace data={this.state.barChartRaceData} ylabel={this.state.yAxisLabel}></BarChartRace>
+              <BarChartGender data={this.state.barChartGenderData} ylabel={this.state.yAxisLabel}></BarChartGender>
             </div>
           </Box>
           <Box className='model-box' id='stacked-area-chart-box' sx={{ boxShadow: 3 }}>
