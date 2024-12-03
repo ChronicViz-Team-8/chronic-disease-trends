@@ -11,7 +11,7 @@ class BarChartGender extends Component {
     const gender = ['Male', 'Female']
 
     // Setup SVG Environment
-    const margin = { top: 50, bottom: 50, right: 50, left: 60 }
+    const margin = { top: 50, bottom: 50, right: 80, left: 60 }
     const width = 450;
     const height = 350;
     const innerWidth = width - margin.right - margin.left;
@@ -57,7 +57,7 @@ class BarChartGender extends Component {
     const stackGen = d3.stack()
       .keys(gender)
       .offset(d3.stackOffsetExpand);
-    
+
     const stackedSeries = stackGen(data);
 
     // Create Bars
@@ -92,28 +92,53 @@ class BarChartGender extends Component {
           .remove()
       )
 
-      svg.selectAll('.x-label')
-        .data([null])
-        .join('text')
-        .attr('class', 'x-label')
-        .attr('transform', `translate(${innerWidth / 2}, ${innerHeight + 40})`)
-        .text('Year')
-        .attr('text-anchor', 'middle')
-        .style('font-weight', 'bold');
+    svg.selectAll('.x-label')
+      .data([null])
+      .join('text')
+      .attr('class', 'x-label')
+      .attr('transform', `translate(${innerWidth / 2}, ${innerHeight + 40})`)
+      .text('Year')
+      .attr('text-anchor', 'middle')
+      .style('font-weight', 'bold');
 
-      svg.selectAll('.y-label')
-        .data([null])
-        .join('text')
-        .attr('class', 'y-label')
-        .attr('transform', `translate(-40, ${innerHeight / 2}), rotate(-90)`)
-        .text('Rate')
-        .attr('text-anchor', 'middle')
-        .style('font-weight', 'bold');
+    svg.selectAll('.y-label')
+      .data([null])
+      .join('text')
+      .attr('class', 'y-label')
+      .attr('transform', `translate(-40, ${innerHeight / 2}), rotate(-90)`)
+      .text('Rate')
+      .attr('text-anchor', 'middle')
+      .style('font-weight', 'bold');
 
+    const legend = svg.selectAll('.legend')
+      .data([null])
+      .join('g')
+      .attr('class', 'legend')
+      .attr('transform', `translate(${innerWidth - 100}, 10)`)
+
+    const legendItem = legend.selectAll('.legend-item')
+      .data(gender)
+      .join('g')
+      .attr('class', 'legend-item')
+      .attr('transform', (d, i) => `translate(100, ${i * 40})`)
+
+    legendItem.selectAll('rect')
+      .data(d => [d])
+      .join('rect')
+      .attr('width', 25)
+      .attr('height', 25)
+      .attr('fill', d => colorScale(d))
+
+    legendItem.selectAll('text')
+      .data(d => [d])
+      .join('text')
+      .attr('transform', `translate(30, 18)`)
+      .text(d => d)
+      .attr('font-size', 14)
   }
 
   render() {
-    return(
+    return (
       <div>
         <svg id='barchart-gender'>
           <g></g>
