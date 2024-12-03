@@ -55,7 +55,7 @@
 #stacked-barchart-box{
   display: flex;
   flex-direction: column;
-  flex: 59%;
+  flex: 30%;
 }
 #dropdown-stacked-bar{
   margin: 5px;
@@ -63,6 +63,8 @@
 #barchart-row{
   display: flex;
   flex-direction: row;
+  justify-content: flex-start;
+  column-gap: 30px;
   margin-top: -47px;
 }
 #stacked-area-chart-box{
