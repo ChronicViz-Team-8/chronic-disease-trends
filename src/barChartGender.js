@@ -86,13 +86,9 @@ class BarChartGender extends Component {
           .attr('height', (d) => yScale(d[0]) - yScale(d[1])),
         exit => exit.transition()
           .duration(600)
+          .attr('height', 0)
           .remove()
       )
-      // .join('rect')
-      // .attr('x', (d) => xScale(d.data.Year))
-      // .attr('y', (d) => yScale(d[1]))
-      // .attr('height', (d) => yScale(d[0]) - yScale(d[1]))
-      // .attr('width', xScale.bandwidth());
   }
 
   render() {
