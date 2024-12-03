@@ -208,15 +208,32 @@ class App extends Component {
             </div>
             <LineChart data={this.state.data}></LineChart>
           </Box>
-          <Box className='model-box' id='stacked-area-chart-box' sx={{ boxShadow: 3 }}>
-            <StackedAreaChart data={this.state.stackedAreaData} questions={this.state.stackedAreaQuestions}></StackedAreaChart>
-            <FormControl id='dropdown-stacked-area' sx={{ width: '200px' }}>
-              <InputLabel>Select a Metric</InputLabel>
-              <Select label="Select a Metric" onChange={this.handleStackAreaChange} value={this.state.selectedStackMetric}>
-                <MenuItem value={'Prevalence'}>Prevalence</MenuItem>
-                <MenuItem value={'Mortality Rate'}>Mortality Rate</MenuItem>
-              </Select>
-            </FormControl>
+          <Box className='model-box' id='treemap-box' sx={{ boxShadow: 3 }}> {}
+          <div className='dropdown-row'>
+              <FormControl id='dropdown-metric-treemap' sx={{ width: '200px' }}>
+                <InputLabel>Select a Metric</InputLabel>
+                <Select label="Select a Metric">
+                  <MenuItem value={'Prevalence'}>Prevalence</MenuItem>
+                  <MenuItem value={'Mortality Rate'}>Mortality Rate</MenuItem>
+                </Select>
+              </FormControl>
+              <FormControl id='dropdown-metric-treemap' sx={{ width: '200px' }}>
+                <InputLabel>Select a Year</InputLabel>
+                <Select label="Select a Year">
+                  <MenuItem value={2011}>2011</MenuItem>
+                  <MenuItem value={2012}>2012</MenuItem>
+                  <MenuItem value={2013}>2013</MenuItem>
+                  <MenuItem value={2014}>2014</MenuItem>
+                  <MenuItem value={2015}>2015</MenuItem>
+                  <MenuItem value={2016}>2016</MenuItem>
+                  <MenuItem value={2017}>2017</MenuItem>
+                  <MenuItem value={2018}>2018</MenuItem>
+                  <MenuItem value={2019}>2019</MenuItem>
+                  <MenuItem value={2020}>2020</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
+            <Treemap data={this.state.data}></Treemap>
           </Box>
         </div>
         <div className='row-model'>
@@ -255,32 +272,15 @@ class App extends Component {
               <BarChartGender data={this.state.barChartGenderData}></BarChartGender>
             </div>
           </Box>
-          <Box className='model-box' id='treemap-box' sx={{ boxShadow: 3 }}>
-            <div className='dropdown-row'>
-              <FormControl id='dropdown-metric-treemap' sx={{ width: '200px' }}>
-                <InputLabel>Select a Metric</InputLabel>
-                <Select label="Select a Metric">
-                  <MenuItem value={'Prevalence'}>Prevalence</MenuItem>
-                  <MenuItem value={'Mortality Rate'}>Mortality Rate</MenuItem>
-                </Select>
-              </FormControl>
-              <FormControl id='dropdown-metric-treemap' sx={{ width: '200px' }}>
-                <InputLabel>Select a Year</InputLabel>
-                <Select label="Select a Year">
-                  <MenuItem value={2011}>2011</MenuItem>
-                  <MenuItem value={2012}>2012</MenuItem>
-                  <MenuItem value={2013}>2013</MenuItem>
-                  <MenuItem value={2014}>2014</MenuItem>
-                  <MenuItem value={2015}>2015</MenuItem>
-                  <MenuItem value={2016}>2016</MenuItem>
-                  <MenuItem value={2017}>2017</MenuItem>
-                  <MenuItem value={2018}>2018</MenuItem>
-                  <MenuItem value={2019}>2019</MenuItem>
-                  <MenuItem value={2020}>2020</MenuItem>
-                </Select>
-              </FormControl>
-            </div>
-            <Treemap data={this.state.data}></Treemap>
+          <Box className='model-box' id='stacked-area-chart-box' sx={{ boxShadow: 3 }}>
+            <StackedAreaChart data={this.state.stackedAreaData} questions={this.state.stackedAreaQuestions}></StackedAreaChart>
+            <FormControl id='dropdown-stacked-area' sx={{ width: '200px' }}>
+              <InputLabel>Select a Metric</InputLabel>
+              <Select label="Select a Metric" onChange={this.handleStackAreaChange} value={this.state.selectedStackMetric}>
+                <MenuItem value={'Prevalence'}>Prevalence</MenuItem>
+                <MenuItem value={'Mortality Rate'}>Mortality Rate</MenuItem>
+              </Select>
+            </FormControl>
           </Box>
         </div>
       </div>

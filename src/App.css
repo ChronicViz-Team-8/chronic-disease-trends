@@ -48,13 +48,9 @@
   flex: 1;
   box-sizing: border-box;
 }
-#stacked-area-chart-box{
+#treemap-box{
   display: flex;
   justify-content: space-between;
-}
-#dropdown-stacked-area{
-  margin-top: 10px;
-  margin-right: 10px;
 }
 #stacked-barchart-box{
   display: flex;
@@ -62,14 +58,13 @@
   flex: 59%;
 }
 #dropdown-stacked-bar{
-  margin-left: 5px;
-  margin-top: 5px;
+  margin: 5px;
 }
 #barchart-row{
   display: flex;
   flex-direction: row;
   margin-top: -47px;
 }
-#treemap-box{
+#stacked-area-chart-box{
   flex: 40%;
 }
