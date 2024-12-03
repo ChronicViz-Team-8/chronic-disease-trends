@@ -11,7 +11,7 @@ class BarChartGender extends Component {
     const gender = ['Male', 'Female']
 
     // Setup SVG Environment
-    const margin = { top: 50, bottom: 50, right: 50, left: 50 }
+    const margin = { top: 50, bottom: 50, right: 50, left: 60 }
     const width = 450;
     const height = 350;
     const innerWidth = width - margin.right - margin.left;
@@ -89,6 +89,25 @@ class BarChartGender extends Component {
           .attr('height', 0)
           .remove()
       )
+
+      svg.selectAll('.x-label')
+        .data([null])
+        .join('text')
+        .attr('class', 'x-label')
+        .attr('transform', `translate(${innerWidth / 2}, ${innerHeight + 40})`)
+        .text('Year')
+        .attr('text-anchor', 'middle')
+        .style('font-weight', 'bold');
+
+      svg.selectAll('.y-label')
+        .data([null])
+        .join('text')
+        .attr('class', 'y-label')
+        .attr('transform', `translate(-40, ${innerHeight / 2}), rotate(-90)`)
+        .text('Rate')
+        .attr('text-anchor', 'middle')
+        .style('font-weight', 'bold');
+
   }
 
   render() {
