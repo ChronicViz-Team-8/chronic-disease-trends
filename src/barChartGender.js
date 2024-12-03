@@ -69,11 +69,30 @@ class BarChartGender extends Component {
       })
       .selectAll('rect')
       .data((d) => d)
-      .join('rect')
-      .attr('x', (d) => xScale(d.data.Year))
-      .attr('y', (d) => yScale(d[1]))
-      .attr('height', (d) => yScale(d[0]) - yScale(d[1]))
-      .attr('width', xScale.bandwidth());
+      .join(
+        enter => enter.append('rect')
+          .attr('x', (d) => xScale(d.data.Year))
+          .attr('y', yScale(0))
+          .attr('height', 0)
+          .attr('width', xScale.bandwidth())
+          .transition()
+          .duration(600)
+          .attr('y', (d) => yScale(d[1]))
+          .attr('height', (d) => yScale(d[0]) - yScale(d[1])),
+        update => update.transition()
+          .duration(600)
+          .attr('x', (d) => xScale(d.data.Year))
+          .attr('y', (d) => yScale(d[1]))
+          .attr('height', (d) => yScale(d[0]) - yScale(d[1])),
+        exit => exit.transition()
+          .duration(600)
+          .remove()
+      )
+      // .join('rect')
+      // .attr('x', (d) => xScale(d.data.Year))
+      // .attr('y', (d) => yScale(d[1]))
+      // .attr('height', (d) => yScale(d[0]) - yScale(d[1]))
+      // .attr('width', xScale.bandwidth());
   }
 
   render() {
