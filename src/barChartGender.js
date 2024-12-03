@@ -43,13 +43,15 @@ class BarChartGender extends Component {
       .join('g')
       .attr('class', 'x-axis')
       .attr('transform', `translate(0, ${innerHeight})`)
-      .call(d3.axisBottom(xScale));
+      .call(d3.axisBottom(xScale))
+      .attr('font-size', 12);
 
     svg.selectAll('.y-axis')
       .data([0])
       .join('g')
       .attr('class', 'y-axis')
-      .call(d3.axisLeft(yScale));
+      .call(d3.axisLeft(yScale))
+      .attr('font-size', 12);
 
     // Generators
     const stackGen = d3.stack()
