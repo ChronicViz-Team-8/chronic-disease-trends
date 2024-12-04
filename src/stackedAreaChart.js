@@ -12,8 +12,8 @@ class StackedAreaChart extends Component {
     const questions = this.props.questions;
 
     // SVG Setup
-    const margin = { top: 50, bottom: 50, right: 50, left: 50 }
-    const width = 450;
+    const margin = { top: 20, bottom: 50, right: 400, left: 60 }
+    const width = 850;
     const height = 350;
     const innerWidth = width - margin.right - margin.left;
     const innerHeight = height - margin.top - margin.bottom;
@@ -35,7 +35,7 @@ class StackedAreaChart extends Component {
     const xScale = d3.scaleLinear()
       .domain(d3.extent(data, d => d.Year))
       .range([0, innerWidth]);
-  
+
     const yScale = d3
       .scaleLinear()
       .domain([0, d3.max(stackedSeries, (layer) => d3.max(layer, (d) => d[1]))])
@@ -57,14 +57,16 @@ class StackedAreaChart extends Component {
       .join('g')
       .attr('class', 'x-axis')
       .attr('transform', `translate(0, ${innerHeight})`)
-      .call(d3.axisBottom(xScale).tickFormat(d3.format('d')));
+      .call(d3.axisBottom(xScale).tickFormat(d3.format('d')))
+      .attr('font-size', 12);
 
     svg.selectAll('.y-axis')
       .data([0])
       .join('g')
       .attr('class', 'y-axis')
-      .call(d3.axisLeft(yScale));
-    
+      .call(d3.axisLeft(yScale))
+      .attr('font-size', 12);
+
     // Create the stream chart
     svg.selectAll('.areas')
       .data(stackedSeries)
@@ -75,10 +77,54 @@ class StackedAreaChart extends Component {
         console.log(`Color for ${d.key}: ${colorScale(d.key)}`); // Delete this
         return colorScale(d.key)
       });
+
+    svg.selectAll('.x-label')
+      .data([null])
+      .join('text')
+      .attr('class', 'x-label')
+      .attr('transform', `translate(${innerWidth / 2}, ${innerHeight + 40})`)
+      .text('Year')
+      .attr('text-anchor', 'middle')
+      .style('font-weight', 'bold');
+
+    svg.selectAll('.y-label')
+      .data([null])
+      .join('text')
+      .attr('class', 'y-label')
+      .attr('transform', `translate(-40, ${innerHeight / 2}), rotate(-90)`)
+      .text('Rate')
+      .attr('text-anchor', 'middle')
+      .style('font-weight', 'bold');
+
+    const legend = svg.selectAll('.legend')
+      .data([null])
+      .join('g')
+      .attr('class', 'legend')
+      .attr('transform', `translate(${innerWidth - 90}, 10)`)
+
+    const legendItem = legend.selectAll('.legend-item')
+      .data([...questions].reverse())
+      .join('g')
+      .attr('class', 'legend-item')
+      .attr('transform', (d, i) => `translate(100, ${i * 40})`)
+
+    legendItem.selectAll('rect')
+      .data(d => [d])
+      .join('rect')
+      .attr('width', 25)
+      .attr('height', 25)
+      .attr('fill', d => colorScale(d));
+
+    legendItem.selectAll('text')
+      .data(d => [d])
+      .join('text')
+      .attr('transform', 'translate(30, 18)')
+      .text(d => d)
+      .attr('font-size', 12)
   }
 
   render() {
-    return(
+    return (
       <div>
         <svg id='stream-chart'>
           <g></g>
