@@ -13,7 +13,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data:[],
+      data: [],
       stackedAreaData: [],
       stackedAreaQuestions: [],
       selectedStackMetric: '',
@@ -36,16 +36,16 @@ class App extends Component {
         Value: +d.DataValue,
         DataType: d.DataValueType
       }))
-      
+
       self.setState({ data: processedData })
     });
   }
 
   handleStackAreaChange = (event) => {
     const filteredData = this.state.data.filter(d => {
-      if(event.target.value === 'Mortality Rate'){
+      if (event.target.value === 'Mortality Rate') {
         return d.Question.toLowerCase().includes('mortality')
-      }else if(event.target.value === 'Prevalence'){
+      } else if (event.target.value === 'Prevalence') {
         return !d.Question.toLowerCase().includes('mortality')
       }
     });
@@ -71,8 +71,8 @@ class App extends Component {
     console.log('Stack Data: ', stackData);
 
     this.setState({ stackedAreaData: stackData });
-    this.setState({ selectedStackMetric:  event.target.value})
-    this.setState({ stackedAreaQuestions: Array.from(groupByQuestion.keys())})
+    this.setState({ selectedStackMetric: event.target.value })
+    this.setState({ stackedAreaQuestions: Array.from(groupByQuestion.keys()) })
   }
 
   handleStackBarChange = (event) => {
@@ -81,7 +81,7 @@ class App extends Component {
     const race = ['Black, non-Hispanic', 'White, non-Hispanic', 'Hispanic', 'Other, non-Hispanic'];
     const gender = ['Male', 'Female'];
 
-    switch(selection) {
+    switch (selection) {
       case 'Arthritis (Prevalence)':
         question = 'Arthritis among adults aged >= 18 years';
         break;
@@ -124,9 +124,9 @@ class App extends Component {
 
     // Dynamically adjust the y-axis labels for the bar charts
     if (selection.includes('Prevalence')) {
-      this.setState({yAxisLabel: 'Prevalence Rate'})
+      this.setState({ yAxisLabel: 'Prevalence Rate' })
     } else if (selection.includes('Mortality')) {
-      this.setState({yAxisLabel: 'Mortality Rate'})
+      this.setState({ yAxisLabel: 'Mortality Rate' })
     }
 
     const filteredData = this.state.data.filter(d => d.Question === question);
@@ -162,7 +162,7 @@ class App extends Component {
 
     this.setState({ barChartGenderData: barGenderData });
     this.setState({ barChartRaceData: barRaceData });
-    this.setState({ selectedBarOption:  event.target.value})
+    this.setState({ selectedBarOption: event.target.value })
   }
 
   render() {
@@ -216,8 +216,8 @@ class App extends Component {
             </div>
             <LineChart data={this.state.data}></LineChart>
           </Box>
-          <Box className='model-box' id='treemap-box' sx={{ boxShadow: 3 }}> {}
-          <div className='dropdown-row'>
+          <Box className='model-box' id='treemap-box' sx={{ boxShadow: 3 }}> { }
+            <div className='dropdown-row'>
               <FormControl id='dropdown-metric-treemap' sx={{ width: '200px' }}>
                 <InputLabel>Select a Metric</InputLabel>
                 <Select label="Select a Metric">
@@ -281,7 +281,6 @@ class App extends Component {
             </div>
           </Box>
           <Box className='model-box' id='stacked-area-chart-box' sx={{ boxShadow: 3 }}>
-            <StackedAreaChart data={this.state.stackedAreaData} questions={this.state.stackedAreaQuestions}></StackedAreaChart>
             <FormControl id='dropdown-stacked-area' sx={{ width: '200px' }}>
               <InputLabel>Select a Metric</InputLabel>
               <Select label="Select a Metric" onChange={this.handleStackAreaChange} value={this.state.selectedStackMetric}>
@@ -289,6 +288,7 @@ class App extends Component {
                 <MenuItem value={'Mortality Rate'}>Mortality Rate</MenuItem>
               </Select>
             </FormControl>
+            <StackedAreaChart data={this.state.stackedAreaData} questions={this.state.stackedAreaQuestions}></StackedAreaChart>
           </Box>
         </div>
       </div>
