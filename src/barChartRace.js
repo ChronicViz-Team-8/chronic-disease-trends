@@ -11,8 +11,8 @@ class BarChartRace extends Component {
     const race = ['Black, non-Hispanic', 'White, non-Hispanic', 'Hispanic', 'Other, non-Hispanic'];
 
     // Setup SVG Environment
-    const margin = { top: 50, bottom: 50, right: 150, left: 60 }
-    const width = 550;
+    const margin = { top: 50, bottom: 50, right: 135, left: 60 }
+    const width = 520;
     const height = 350;
     const innerWidth = width - margin.right - margin.left;
     const innerHeight = height - margin.top - margin.bottom;
@@ -134,7 +134,7 @@ class BarChartRace extends Component {
       .join('text')
       .attr('transform', 'translate(30, 18)')
       .text(d => d)
-      .attr('font-size', 14)
+      .attr('font-size', 12)
   }
 
   render() {

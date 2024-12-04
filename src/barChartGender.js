@@ -12,7 +12,7 @@ class BarChartGender extends Component {
 
     // Setup SVG Environment
     const margin = { top: 50, bottom: 50, right: 80, left: 60 }
-    const width = 480;
+    const width = 460;
     const height = 350;
     const innerWidth = width - margin.right - margin.left;
     const innerHeight = height - margin.top - margin.bottom;
@@ -134,7 +134,7 @@ class BarChartGender extends Component {
       .join('text')
       .attr('transform', `translate(30, 18)`)
       .text(d => d)
-      .attr('font-size', 14)
+      .attr('font-size', 12)
   }
 
   render() {
