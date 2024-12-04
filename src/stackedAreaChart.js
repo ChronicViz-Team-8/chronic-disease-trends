@@ -12,7 +12,7 @@ class StackedAreaChart extends Component {
     const questions = this.props.questions;
 
     // SVG Setup
-    const margin = { top: 5, bottom: 50, right: 400, left: 60 }
+    const margin = { top: 20, bottom: 50, right: 400, left: 60 }
     const width = 850;
     const height = 350;
     const innerWidth = width - margin.right - margin.left;
@@ -103,7 +103,7 @@ class StackedAreaChart extends Component {
       .attr('transform', `translate(${innerWidth - 90}, 10)`)
 
     const legendItem = legend.selectAll('.legend-item')
-      .data(questions.reverse())
+      .data([...questions].reverse())
       .join('g')
       .attr('class', 'legend-item')
       .attr('transform', (d, i) => `translate(100, ${i * 40})`)

@@ -117,7 +117,7 @@ class BarChartGender extends Component {
       .attr('transform', `translate(${innerWidth - 100}, 10)`)
 
     const legendItem = legend.selectAll('.legend-item')
-      .data(gender.reverse())
+      .data([...gender].reverse())
       .join('g')
       .attr('class', 'legend-item')
       .attr('transform', (d, i) => `translate(100, ${i * 40})`)

@@ -117,7 +117,7 @@ class BarChartRace extends Component {
       .attr('transform', `translate(${innerWidth - 100}, 10)`)
 
     const legendItem = legend.selectAll('.legend-item')
-      .data(race.reverse())
+      .data([...race].reverse())
       .join('g')
       .attr('class', 'legend-item')
       .attr('transform', (d, i) => `translate(100, ${i * 40})`)
