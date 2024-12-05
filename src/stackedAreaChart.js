@@ -119,7 +119,20 @@ class StackedAreaChart extends Component {
       .data(d => [d])
       .join('text')
       .attr('transform', 'translate(30, 18)')
-      .text(d => d)
+      .text(d => d
+        .replace('Arthritis among adults aged >= 18 years', 'Arthritis') // Prevalence questions
+        .replace('Prevalence of diagnosed diabetes among adults aged >= 18 years', 'Diabetes')
+        .replace('Prevalence of chronic kidney disease among adults aged >= 18 years', 'Chronic Kidney Disease')
+        .replace('Prevalence of chronic obstructive pulmonary disease among adults >= 18', 'COPD')
+        .replace('Obesity among adults aged >= 18 years', 'Obesity')
+        .replace('Current asthma prevalence among adults aged >= 18 years', 'Asthma')
+        .replace('Mortality due to diabetes reported as any listed cause of death', 'Diabetes') // Mortality questions
+        .replace('Mortality from cerebrovascular disease (stroke)', 'Cerebrovascular Disease (stroke)')
+        .replace('Mortality from total cardiovascular diseases', 'Total Cardiovascular Diseases')
+        .replace('Mortality with end-stage renal disease', 'End-stage Renal Disease')
+        .replace('Asthma mortality rate', 'Asthma')
+        .replace('Chronic liver disease mortality', 'Chronic Liver Disease')
+      )
       .attr('font-size', 12)
   }
 
