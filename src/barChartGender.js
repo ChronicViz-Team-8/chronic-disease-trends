@@ -9,11 +9,12 @@ class BarChartGender extends Component {
   getModel() {
     const data = this.props.data;
     const gender = ['Male', 'Female']
+    const race = ['Black, non-Hispanic', 'White, non-Hispanic', 'Hispanic', 'Other, non-Hispanic']
 
     // Setup SVG Environment
-    const margin = { top: 50, bottom: 50, right: 80, left: 60 }
-    const width = 460;
-    const height = 350;
+    const margin = { top: 50, bottom: 50, right: 130, left: 60 }
+    const width = 540;
+    const height = 400;
     const innerWidth = width - margin.right - margin.left;
     const innerHeight = height - margin.top - margin.bottom;
 
@@ -33,9 +34,13 @@ class BarChartGender extends Component {
       .domain([0, 1])
       .range([innerHeight, 0]);
 
-    const colorScale = d3.scaleOrdinal()
+    const genderColorScale = d3.scaleOrdinal()
       .domain(gender)
       .range(['#7EC8E3', '#F5A3C7']);
+
+    const raceColorScale = d3.scaleOrdinal()
+      .domain(race)
+      .range(['#4472c4', '#f1b7a3', '#c5e0b4', '#c8a7ed']);
 
     // Axis
     svg.selectAll('.x-axis')
@@ -66,8 +71,8 @@ class BarChartGender extends Component {
       .join('g')
       .attr('class', 'bars')
       .attr('fill', (d) => {
-        console.log(`Color for ${d.key}: `, colorScale(d.key));
-        return colorScale(d.key);
+        console.log(`Color for ${d.key}: `, genderColorScale(d.key));
+        return genderColorScale(d.key);
       })
       .selectAll('rect')
       .data((d) => d)
@@ -114,27 +119,65 @@ class BarChartGender extends Component {
       .data([null])
       .join('g')
       .attr('class', 'legend')
-      .attr('transform', `translate(${innerWidth - 100}, 10)`)
+      .attr('transform', `translate(${innerWidth + 5}, -20)`);
 
-    const legendItem = legend.selectAll('.legend-item')
-      .data([...gender].reverse())
+    legend.selectAll('.race-title')
+      .data([null])
+      .join('text')
+      .attr('class', 'race-title')
+      .attr('transform', 'translate(0, 20)')
+      .text('Race')
+      .attr('font-size', 14)
+      .attr('font-weight', 'bold');
+
+    const raceLegendItems = legend.selectAll('.race-legend-item')
+      .data([...race].reverse())
       .join('g')
-      .attr('class', 'legend-item')
-      .attr('transform', (d, i) => `translate(100, ${i * 40})`)
+      .attr('class', 'race-legend-item')
+      .attr('transform', (d, i) => `translate(0, ${i * 25 + 35})`);
 
-    legendItem.selectAll('rect')
+    raceLegendItems.selectAll('rect')
       .data(d => [d])
       .join('rect')
-      .attr('width', 25)
-      .attr('height', 25)
-      .attr('fill', d => colorScale(d))
+      .attr('width', 20)
+      .attr('height', 20)
+      .attr('fill', d => raceColorScale(d));
 
-    legendItem.selectAll('text')
+    raceLegendItems.selectAll('text')
       .data(d => [d])
       .join('text')
-      .attr('transform', `translate(30, 18)`)
+      .attr('transform', 'translate(25, 15)')
       .text(d => d)
-      .attr('font-size', 12)
+      .attr('font-size', 12);
+
+    legend.selectAll('.gender-title')
+      .data([null])
+      .join('text')
+      .attr('class', 'gender-title')
+      .attr('transform', 'translate(0, 160)')
+      .text('Gender')
+      .attr('font-size', 14)
+      .attr('font-weight', 'bold');
+
+    const genderLegendItems = legend.selectAll('.gender-legend-item')
+      .data([...gender].reverse())
+      .join('g')
+      .attr('class', 'gender-legend-item')
+      .attr('transform', (d, i) => `translate(0, ${i * 25 + 175})`);
+
+    genderLegendItems.selectAll('rect')
+      .data(d => [d])
+      .join('rect')
+      .attr('width', 20)
+      .attr('height', 20)
+      .attr('fill', d => genderColorScale(d));
+
+    genderLegendItems.selectAll('text')
+      .data(d => [d])
+      .join('text')
+      .attr('transform', 'translate(25, 15)')
+      .text(d => d)
+      .attr('font-size', 12);
   }
 
   render() {

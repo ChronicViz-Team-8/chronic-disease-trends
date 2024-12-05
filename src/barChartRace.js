@@ -11,9 +11,9 @@ class BarChartRace extends Component {
     const race = ['Black, non-Hispanic', 'White, non-Hispanic', 'Hispanic', 'Other, non-Hispanic'];
 
     // Setup SVG Environment
-    const margin = { top: 50, bottom: 50, right: 135, left: 60 }
-    const width = 520;
-    const height = 350;
+    const margin = { top: 50, bottom: 50, right: 5, left: 60 }
+    const width = 410;
+    const height = 400;
     const innerWidth = width - margin.right - margin.left;
     const innerHeight = height - margin.top - margin.bottom;
 
@@ -109,32 +109,6 @@ class BarChartRace extends Component {
       .text(this.props.ylabel)
       .attr('text-anchor', 'middle')
       .style('font-weight', 'bold')
-
-    const legend = svg.selectAll('.legend')
-      .data([null])
-      .join('g')
-      .attr('class', 'legend')
-      .attr('transform', `translate(${innerWidth - 100}, 10)`)
-
-    const legendItem = legend.selectAll('.legend-item')
-      .data([...race].reverse())
-      .join('g')
-      .attr('class', 'legend-item')
-      .attr('transform', (d, i) => `translate(100, ${i * 40})`)
-
-    legendItem.selectAll('rect')
-      .data(d => [d])
-      .join('rect')
-      .attr('width', 25)
-      .attr('height', 25)
-      .attr('fill', d => colorScale(d));
-
-    legendItem.selectAll('text')
-      .data(d => [d])
-      .join('text')
-      .attr('transform', 'translate(30, 18)')
-      .text(d => d)
-      .attr('font-size', 12)
   }
 
   render() {
