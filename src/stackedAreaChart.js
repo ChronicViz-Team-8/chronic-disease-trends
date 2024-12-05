@@ -49,7 +49,8 @@ class StackedAreaChart extends Component {
     const areaGen = d3.area()
       .x(d => xScale(d.data.Year))
       .y0(d => yScale(d[0]))
-      .y1(d => yScale(d[1]));
+      .y1(d => yScale(d[1]))
+      .curve(d3.curveCardinal);
 
     // Axis
     svg.selectAll('.x-axis')
