@@ -10,8 +10,8 @@ class BarChartGender extends Component {
     const data = this.props.data;
     const gender = ['Male', 'Female']
 
-    // Setup SVG Environment
     const margin = { top: 50, bottom: 50, right: 80, left: 60 }
+
     const width = 460;
     const height = 350;
     const innerWidth = width - margin.right - margin.left;
@@ -30,7 +30,9 @@ class BarChartGender extends Component {
       .padding(0.2);
 
     const yScale = d3.scaleLinear()
+
       .domain([0, 1])
+
       .range([innerHeight, 0]);
 
     const colorScale = d3.scaleOrdinal()
@@ -60,7 +62,9 @@ class BarChartGender extends Component {
 
     const stackedSeries = stackGen(data);
 
-    // Create Bars
+
+    const tooltip = d3.select('.tooltip'); 
+    
     svg.selectAll('.bars')
       .data(stackedSeries)
       .join('g')
@@ -80,7 +84,37 @@ class BarChartGender extends Component {
           .transition()
           .duration(1000)
           .attr('y', (d) => yScale(d[1]))
-          .attr('height', (d) => yScale(d[0]) - yScale(d[1])),
+          .attr('height', (d) => yScale(d[0]) - yScale(d[1]))
+          .each(function(d) {
+              this.addEventListener('mouseover', function(event) {
+    const year = d.data.Year;
+
+    const maleCount = d.data.Male || 0;     
+    const femaleCount = d.data.Female || 0;
+    const totalCount = maleCount + femaleCount; 
+
+    const maleRate = totalCount > 0 ? maleCount / totalCount : 0; 
+    const femaleRate = totalCount > 0 ? femaleCount / totalCount : 0; 
+
+    tooltip.style('display', 'block')
+           .style('left', (event.pageX + 10) + 'px')
+           .style('top', (event.pageY - 30) + 'px')
+           .html(`
+               <strong>Year:</strong> ${year}<br>
+               <strong>Female:</strong> ${femaleRate.toFixed(2)}<br>
+               <strong>Male:</strong> ${maleRate.toFixed(2)}<br>
+           `);
+});
+
+              this.addEventListener('mousemove', function(event) {
+                  tooltip.style('left', (event.pageX + 10) + 'px')
+                         .style('top', (event.pageY - 30) + 'px');
+              });
+
+              this.addEventListener('mouseout', function() {
+                  tooltip.style('display', 'none');
+              });
+          }),
         update => update.transition()
           .duration(1000)
           .attr('x', (d) => xScale(d.data.Year))
@@ -90,7 +124,8 @@ class BarChartGender extends Component {
           .duration(1000)
           .attr('height', 0)
           .remove()
-      )
+
+      );
 
     svg.selectAll('.x-label')
       .data([null])
@@ -110,11 +145,12 @@ class BarChartGender extends Component {
       .attr('text-anchor', 'middle')
       .style('font-weight', 'bold');
 
+
     const legend = svg.selectAll('.legend')
       .data([null])
       .join('g')
       .attr('class', 'legend')
-      .attr('transform', `translate(${innerWidth - 100}, 10)`)
+      .attr('transform', `translate(${innerWidth - 100}, 10)`);
 
     const legendItem = legend.selectAll('.legend-item')
       .data([...gender].reverse())
@@ -143,6 +179,9 @@ class BarChartGender extends Component {
         <svg id='barchart-gender'>
           <g></g>
         </svg>
+
+        {/* Tooltip */}
+        <div className="tooltip" style={{ display: "none", position: "absolute", background: "#fff", border: "1px solid #ccc", padding: "5px", borderRadius: "5px", pointerEvents: "none", zIndex: 10 }}></div>
       </div>
     );
   }

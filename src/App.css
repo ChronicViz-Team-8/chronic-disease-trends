@@ -60,14 +60,30 @@
   flex: 30%;
 }
 #dropdown-stacked-bar{
-  margin: 5px;
+  margin: 3px;
 }
 #barchart-row{
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  margin-top: -47px;
+  margin-top: -45px;
 }
+
+/* changes color on hover if we want that effect */
+/*.bars rect:hover {
+    opacity: 0.7; 
+    cursor: pointer; 
+}*/
+
+/* tooltip styles */
+.tooltip {
+    position: absolute;
+    display: none; 
+    color: black; 
+    font-size: 14px; 
+    pointer-events: none; 
+}
+
 /* #stacked-area-chart-box{
   flex: 40%;
 } */
