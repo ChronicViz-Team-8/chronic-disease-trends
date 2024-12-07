@@ -6,6 +6,12 @@ class BarChartGender extends Component {
     this.getModel();
   }
 
+  // Only re-render the chart when the data has changed
+  shouldComponentUpdate(nextProps) {
+    return JSON.stringify(this.props.data) !== JSON.stringify(nextProps.data) ||
+      this.props.ylabel !== nextProps.ylabel;
+  }
+
   getModel() {
     const data = this.props.data;
     const gender = ['Male', 'Female']
@@ -23,6 +29,18 @@ class BarChartGender extends Component {
       .attr('height', height)
       .select('g')
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+    const tooltip = d3.select('body')
+      .selectAll('.tooltip')
+      .data([null])
+      .join('div')
+      .attr('class', 'tooltip')
+      .style('position', 'absolute')
+      .style('background', 'white')
+      .style('padding', '5px')
+      .style('border-radius', '10px')
+      .style('border', '1px solid gray')
+      .style('visibility', 'hidden');
 
     // Scales
     const xScale = d3.scaleBand()
@@ -65,37 +83,56 @@ class BarChartGender extends Component {
 
     const stackedSeries = stackGen(data);
 
-    // Create Bars
-    svg.selectAll('.bars')
+    // Bars
+    const barsGroups = svg.selectAll('.bars')
       .data(stackedSeries)
-      .join('g')
-      .attr('class', 'bars')
-      .attr('fill', (d) => {
-        console.log(`Color for ${d.key}: `, genderColorScale(d.key));
-        return genderColorScale(d.key);
-      })
-      .selectAll('rect')
-      .data((d) => d)
+      .join(
+        enter => enter.append('g')
+          .attr('class', 'bars')
+          .attr('fill', d => genderColorScale(d.key)),
+        update => update.attr('fill', d => genderColorScale(d.key)),
+        exit => exit.remove()
+      );
+
+    barsGroups.selectAll('rect')
+      .data(d => d)
       .join(
         enter => enter.append('rect')
-          .attr('x', (d) => xScale(d.data.Year))
+          .attr('x', d => xScale(d.data?.Year || ''))
           .attr('y', yScale(0))
           .attr('height', 0)
-          .attr('width', xScale.bandwidth())
-          .transition()
-          .duration(1000)
-          .attr('y', (d) => yScale(d[1]))
-          .attr('height', (d) => yScale(d[0]) - yScale(d[1])),
-        update => update.transition()
-          .duration(1000)
-          .attr('x', (d) => xScale(d.data.Year))
-          .attr('y', (d) => yScale(d[1]))
-          .attr('height', (d) => yScale(d[0]) - yScale(d[1])),
+          .attr('width', xScale.bandwidth()),
+        update => update,
         exit => exit.transition()
           .duration(1000)
           .attr('height', 0)
+          .attr('y', yScale(0))
           .remove()
       )
+      .on('mousemove', (event, d) => {
+        if (!d.data) return;
+        const tooltipContent = `<strong>Year</strong>: ${d.data.Year || 'N/A'}<br>` +
+          gender.map(g => {
+            // Calculate total for this year to get percentages
+            const total = gender.reduce((sum, g) => sum + d.data[g], 0);
+            const value = d.data[g];
+            const percentage = (value / total) * 100;
+            return `<strong>${g}</strong>: ${percentage.toFixed(2)}%`;
+          }).join('<br>');
+
+        tooltip
+          .style('visibility', 'visible')
+          .style('left', `${event.pageX + 10}px`)
+          .style('top', `${event.pageY + 10}px`)
+          .html(tooltipContent);
+      })
+      .on('mouseout', () => tooltip.style('visibility', 'hidden'))
+      .transition()
+      .duration(1000)
+      .attr('x', d => xScale(d.data?.Year || ''))
+      .attr('y', d => yScale(d[1]))
+      .attr('height', d => yScale(d[0]) - yScale(d[1]))
+      .attr('width', xScale.bandwidth());
 
     svg.selectAll('.x-label')
       .data([null])
