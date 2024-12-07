@@ -44,8 +44,7 @@
 #line-chart-box, 
 #stacked-area-chart-box, 
 #stacked-barchart-box, 
-#treemap-box,
-#stacked-area-chart-box {
+#treemap-box {
   flex: 1;
   flex-direction: column;
   box-sizing: border-box;
@@ -58,6 +57,10 @@
   display: flex;
   flex-direction: column;
   flex: 30%;
+  width: 965px;
+  max-width: 965px;
+  height: 430px;
+  max-height: 430px;
 }
 #dropdown-stacked-bar{
   margin: 5px;
@@ -68,6 +71,10 @@
   justify-content: flex-start;
   margin-top: -47px;
 }
-/* #stacked-area-chart-box{
-  flex: 40%;
-} */
+#stacked-area-chart-box{
+  flex: 1;
+  flex-direction: column;
+  box-sizing: border-box;
+  height: 430px;
+  max-height: 430px;
+}

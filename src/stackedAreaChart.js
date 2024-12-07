@@ -12,9 +12,9 @@ class StackedAreaChart extends Component {
     const questions = this.props.questions;
 
     // SVG Setup
-    const margin = { top: 20, bottom: 50, right: 400, left: 60 }
+    const margin = { top: 5, bottom: 50, right: 200, left: 60 }
     const width = 850;
-    const height = 350;
+    const height = 364;
     const innerWidth = width - margin.right - margin.left;
     const innerHeight = height - margin.top - margin.bottom;
 
@@ -49,7 +49,8 @@ class StackedAreaChart extends Component {
     const areaGen = d3.area()
       .x(d => xScale(d.data.Year))
       .y0(d => yScale(d[0]))
-      .y1(d => yScale(d[1]));
+      .y1(d => yScale(d[1]))
+      .curve(d3.curveCardinal);
 
     // Axis
     svg.selectAll('.x-axis')
