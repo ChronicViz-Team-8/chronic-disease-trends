@@ -6,8 +6,14 @@ class BarChartRace extends Component {
     this.getModel();
   }
 
+  shouldComponentUpdate(nextProps) {
+    return JSON.stringify(this.props.data) !== JSON.stringify(nextProps.data) ||
+      this.props.ylabel !== nextProps.ylabel;
+  }
+
   getModel() {
     const data = this.props.data;
+
     const race = ['Black, non-Hispanic', 'White, non-Hispanic', 'Hispanic', 'Other, non-Hispanic'];
 
     // Setup SVG Environment
@@ -16,6 +22,20 @@ class BarChartRace extends Component {
     const height = 400;
     const innerWidth = width - margin.right - margin.left;
     const innerHeight = height - margin.top - margin.bottom;
+
+    // Remove any existing tooltip
+    d3.select('.tooltip').remove();
+
+    const tooltip = d3.select('body').selectAll('.tooltip')
+      .data([null])
+      .join('div')
+      .attr('class', 'tooltip')
+      .style('position', 'absolute')
+      .style('background', 'white')
+      .style('padding', '5px')
+      .style('border-radius', '10px')
+      .style('border', '1px solid gray')
+      .style('visibility', 'hidden');
 
     const svg = d3.select('#barchart-race')
       .attr('width', width)
@@ -61,36 +81,57 @@ class BarChartRace extends Component {
     const stackedSeries = stackGen(data);
 
     // Create Bars
-    svg.selectAll('.bars')
+    const barsGroups = svg.selectAll('.bars')
       .data(stackedSeries)
-      .join('g')
-      .attr('class', 'bars')
-      .attr('fill', (d) => {
-        console.log(`Color for ${d.key}: `, colorScale(d.key));
-        return colorScale(d.key);
-      })
-      .selectAll('rect')
-      .data((d) => d)
+      .join(
+        enter => enter.append('g')
+          .attr('class', 'bars')
+          .attr('fill', d => colorScale(d.key)),
+        update => update.attr('fill', d => colorScale(d.key)),
+        exit => exit.remove()
+      );
+
+    barsGroups.selectAll('rect')
+      .data(d => d)
       .join(
         enter => enter.append('rect')
-          .attr('x', (d) => xScale(d.data.Year))
-          .attr('y', yScale(0))
-          .attr('height', 0)
+          .attr('x', d => xScale(d.data.Year))
           .attr('width', xScale.bandwidth())
-          .transition()
-          .duration(1000)
-          .attr('y', (d) => yScale(d[1]))
-          .attr('height', (d) => yScale(d[0]) - yScale(d[1])),
-        update => update.transition()
-          .duration(1000)
-          .attr('x', (d) => xScale(d.data.Year))
-          .attr('y', (d) => yScale(d[1]))
-          .attr('height', (d) => yScale(d[0]) - yScale(d[1])),
+          .attr('y', yScale(0))
+          .attr('height', 0),
+        update => update,
         exit => exit.transition()
           .duration(1000)
           .attr('height', 0)
+          .attr('y', yScale(0))
           .remove()
       )
+      .on('mousemove', (event, d) => {
+        if (!d.data) return;
+        const tooltipContent = `<strong>Year</strong>: ${d.data.Year}<br>` +
+          [...race].map(raceName => {
+            // Calculate total for this year to get percentages
+            const total = race.reduce((sum, r) => sum + d.data[r], 0);
+            const value = d.data[raceName];
+            const percentage = (value / total) * 100;
+            return `<strong>${raceName}</strong>: ${percentage.toFixed(2)}%`;
+          }).reverse().join('<br>');
+
+        tooltip
+          .style('visibility', 'visible')
+          .style('left', (event.pageX + 10) + 'px')
+          .style('top', (event.pageY + 10) + 'px')
+          .html(tooltipContent);
+      })
+      .on('mouseout', () => {
+        tooltip.style('visibility', 'hidden');
+      })
+      .transition()
+      .duration(1000)
+      .attr('x', d => xScale(d.data.Year))
+      .attr('width', xScale.bandwidth())
+      .attr('y', d => yScale(d[1]))
+      .attr('height', d => yScale(d[0]) - yScale(d[1]));
 
     svg.selectAll('.x-label')
       .data([null])
