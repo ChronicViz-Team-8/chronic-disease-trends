@@ -14,12 +14,12 @@ class App extends Component {
     super(props);
     this.state = {
       data: [],
-      stackedAreaData: [],
-      stackedAreaQuestions: [],
-      selectedStackMetric: '',
       barChartGenderData: [],
       barChartRaceData: [],
       selectedBarOption: '',
+      stackedAreaData: [],
+      stackedAreaQuestions: [],
+      selectedStackMetric: '',
       yAxisLabel: 'Rate',
     };
   }
@@ -31,6 +31,7 @@ class App extends Component {
       const processedData = data.map(d => ({
         Year: d.YearStart,
         Location: d.LocationDesc,
+        Region: d.Region,
         Question: d.Question,
         Stratification: d.Stratification1,
         Value: +d.DataValue,
