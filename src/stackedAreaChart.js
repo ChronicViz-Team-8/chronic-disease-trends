@@ -13,7 +13,7 @@ class StackedAreaChart extends Component {
 
     // SVG Setup
     const margin = { top: 5, bottom: 50, right: 200, left: 60 }
-    const width = 850;
+    const width = 630;
     const height = 364;
     const innerWidth = width - margin.right - margin.left;
     const innerHeight = height - margin.top - margin.bottom;

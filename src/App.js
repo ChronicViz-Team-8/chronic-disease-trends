@@ -201,7 +201,7 @@ class App extends Component {
                   <MenuItem value={'Stroke (Mortality Rate)'}>Stroke (Mortality Rate)</MenuItem>
                 </Select>
               </FormControl>
-              <FormControl id='dropdown-line-selection-linechart' sx={{ width: '200px' }}>
+              <FormControl id='dropdown-line-selection-linechart' className='right-dropdown' sx={{ width: '200px' }}>
                 <InputLabel>Add a Line</InputLabel>
                 <Select label="Add a Line">
                   <MenuItem value={'Male'}>Male</MenuItem>
@@ -225,7 +225,7 @@ class App extends Component {
                   <MenuItem value={'Mortality Rate'}>Mortality Rate</MenuItem>
                 </Select>
               </FormControl>
-              <FormControl id='dropdown-metric-treemap' sx={{ width: '200px' }}>
+              <FormControl id='dropdown-year-treemap' className='right-dropdown' sx={{ width: '200px' }}>
                 <InputLabel>Select a Year</InputLabel>
                 <Select label="Select a Year">
                   <MenuItem value={2011}>2011</MenuItem>
@@ -246,48 +246,52 @@ class App extends Component {
         </div>
         <div className='row-model'>
           <Box className='model-box' id='stacked-barchart-box' sx={{ boxShadow: 3 }}>
-            <FormControl id='dropdown-stacked-bar' sx={{ width: '250px' }}>
-              <InputLabel>Select Chronic Disease</InputLabel>
-              <Select
-                label="Select Chronic Disease"
-                onChange={this.handleStackBarChange}
-                value={this.stateBarOption}
-                MenuProps={{
-                  PaperProps: {
-                    style: {
-                      maxHeight: 200,
-                      overflow: 'auto',
+            <div className='dropdown-single'>
+              <FormControl id='dropdown-stacked-bar' sx={{ width: '250px' }}>
+                <InputLabel>Select Chronic Disease</InputLabel>
+                <Select
+                  label="Select Chronic Disease"
+                  onChange={this.handleStackBarChange}
+                  value={this.stateBarOption}
+                  MenuProps={{
+                    PaperProps: {
+                      style: {
+                        maxHeight: 200,
+                        overflow: 'auto',
+                      },
                     },
-                  },
-                }}
-              >
-                <MenuItem value={'Arthritis (Prevalence)'}>Arthritis (Prevalence)</MenuItem>
-                <MenuItem value={'Asthma (Mortality Rate)'}>Asthma (Mortality Rate)</MenuItem>
-                <MenuItem value={'Asthma (Prevalence)'}>Asthma (Prevalence)</MenuItem>
-                <MenuItem value={'COPD (Prevalence)'}>COPD (Prevalence)</MenuItem>
-                <MenuItem value={'Cardiovascular Disease (Mortality Rate)'}>Cardiovascular Disease (Mortality Rate)</MenuItem>
-                <MenuItem value={'Chronic Liver Disease (Mortality Rate)'}>Chronic Liver Disease (Mortality Rate)</MenuItem>
-                <MenuItem value={'Diabetes (Mortality Rate)'}>Diabetes (Mortality Rate)</MenuItem>
-                <MenuItem value={'Diabetes (Prevalence)'}>Diabetes (Prevalence)</MenuItem>
-                <MenuItem value={'End-Stage Renal Disease (Mortality Rate)'}>End-Stage Renal Disease (Mortality Rate)</MenuItem>
-                <MenuItem value={'Kidney Disease (Prevalence)'}>Kidney Disease (Prevalence)</MenuItem>
-                <MenuItem value={'Obesity (Prevalence)'}>Obesity (Prevalence)</MenuItem>
-                <MenuItem value={'Stroke (Mortality Rate)'}>Stroke (Mortality Rate)</MenuItem>
-              </Select>
-            </FormControl>
+                  }}
+                >
+                  <MenuItem value={'Arthritis (Prevalence)'}>Arthritis (Prevalence)</MenuItem>
+                  <MenuItem value={'Asthma (Mortality Rate)'}>Asthma (Mortality Rate)</MenuItem>
+                  <MenuItem value={'Asthma (Prevalence)'}>Asthma (Prevalence)</MenuItem>
+                  <MenuItem value={'COPD (Prevalence)'}>COPD (Prevalence)</MenuItem>
+                  <MenuItem value={'Cardiovascular Disease (Mortality Rate)'}>Cardiovascular Disease (Mortality Rate)</MenuItem>
+                  <MenuItem value={'Chronic Liver Disease (Mortality Rate)'}>Chronic Liver Disease (Mortality Rate)</MenuItem>
+                  <MenuItem value={'Diabetes (Mortality Rate)'}>Diabetes (Mortality Rate)</MenuItem>
+                  <MenuItem value={'Diabetes (Prevalence)'}>Diabetes (Prevalence)</MenuItem>
+                  <MenuItem value={'End-Stage Renal Disease (Mortality Rate)'}>End-Stage Renal Disease (Mortality Rate)</MenuItem>
+                  <MenuItem value={'Kidney Disease (Prevalence)'}>Kidney Disease (Prevalence)</MenuItem>
+                  <MenuItem value={'Obesity (Prevalence)'}>Obesity (Prevalence)</MenuItem>
+                  <MenuItem value={'Stroke (Mortality Rate)'}>Stroke (Mortality Rate)</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
             <div id='barchart-row'>
               <BarChartRace data={this.state.barChartRaceData} ylabel={this.state.yAxisLabel}></BarChartRace>
               <BarChartGender data={this.state.barChartGenderData} ylabel={this.state.yAxisLabel}></BarChartGender>
             </div>
           </Box>
           <Box className='model-box' id='stacked-area-chart-box' sx={{ boxShadow: 3 }}>
-            <FormControl id='dropdown-stacked-area' sx={{ width: '200px' }}>
-              <InputLabel>Select a Metric</InputLabel>
-              <Select label="Select a Metric" onChange={this.handleStackAreaChange} value={this.state.selectedStackMetric}>
-                <MenuItem value={'Prevalence'}>Prevalence</MenuItem>
-                <MenuItem value={'Mortality Rate'}>Mortality Rate</MenuItem>
-              </Select>
-            </FormControl>
+            <div className='dropdown-single'>
+              <FormControl id='dropdown-stacked-area' sx={{ width: '200px' }}>
+                <InputLabel>Select a Metric</InputLabel>
+                <Select label="Select a Metric" onChange={this.handleStackAreaChange} value={this.state.selectedStackMetric}>
+                  <MenuItem value={'Prevalence'}>Prevalence</MenuItem>
+                  <MenuItem value={'Mortality Rate'}>Mortality Rate</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
             <StackedAreaChart data={this.state.stackedAreaData} questions={this.state.stackedAreaQuestions}></StackedAreaChart>
           </Box>
         </div>
