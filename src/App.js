@@ -283,7 +283,9 @@ class App extends Component {
                 </Select>
               </FormControl>
             </div>
-            <StackedAreaChart data={this.state.stackedAreaData} questions={this.state.stackedAreaQuestions}></StackedAreaChart>
+            <div id='stacked-area-container'>
+              <StackedAreaChart data={this.state.stackedAreaData} questions={this.state.stackedAreaQuestions}></StackedAreaChart>
+            </div>
           </Box>
         </div>
       </div>

@@ -184,7 +184,17 @@ class BarChartGender extends Component {
       .data(d => [d])
       .join('text')
       .attr('transform', 'translate(25, 15)')
-      .text(d => d)
+      .text(d => {
+        if (d === 'Black, non-Hispanic') {
+          return 'Black'
+        } else if (d === 'White, non-Hispanic') {
+          return 'White';
+        } else if (d === 'Other, non-Hispanic') {
+          return 'Other';
+        } else {
+          return d;
+        }
+      })
       .attr('font-size', 12);
 
     legend.selectAll('.gender-title')
