@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import * as d3 from 'd3';
 import { Box, FormControl, MenuItem, Select, InputLabel } from '@mui/material';
-import DropdownWithCheckboxes from './LineChartLinesSelection';
+import LineSelection from './LineChartLinesSelection';
 import chronic from './cleaned_chronic_disease_indicators.csv'
 import LineChart from './lineChart';
 import StackedAreaChart from './stackedAreaChart';
@@ -43,6 +43,49 @@ class App extends Component {
     });
   }
 
+  getDiseaseQuestion = (selection) => {
+    switch (selection) {
+      case 'Arthritis (Prevalence)':
+        return 'Arthritis among adults aged >= 18 years';
+        break;
+      case 'Asthma (Mortality Rate)':
+        return 'Asthma mortality rate';
+        break;
+      case 'Asthma (Prevalence)':
+        return 'Current asthma prevalence among adults aged >= 18 years';
+        break;
+      case 'COPD (Prevalence)':
+        return 'Prevalence of chronic obstructive pulmonary disease among adults >= 18';
+        break;
+      case 'Cardiovascular Disease (Mortality Rate)':
+        return 'Mortality from total cardiovascular diseases';
+        break;
+      case 'Chronic Liver Disease (Mortality Rate)':
+        return 'Chronic liver disease mortality';
+        break;
+      case 'Diabetes (Mortality Rate)':
+        return 'Mortality due to diabetes reported as any listed cause of death';
+        break;
+      case 'Diabetes (Prevalence)':
+        return 'Prevalence of diagnosed diabetes among adults aged >= 18 years';
+        break;
+      case 'End-Stage Renal Disease (Mortality Rate)':
+        return 'Mortality with end-stage renal disease';
+        break;
+      case 'Kidney Disease (Prevalence)':
+        return 'Prevalence of chronic kidney disease among adults aged >= 18 years';
+        break;
+      case 'Obesity (Prevalence)':
+        return 'Obesity among adults aged >= 18 years';
+        break;
+      case 'Stroke (Mortality Rate)':
+        return 'Mortality from cerebrovascular disease (stroke)';
+        break;
+      default:
+        break;
+    };
+  }
+
   handleStackAreaChange = (event) => {
     const filteredData = this.state.data.filter(d => {
       if (event.target.value === 'Mortality Rate') {
@@ -78,51 +121,11 @@ class App extends Component {
   }
 
   handleStackBarChange = (event) => {
-    var question;
     const selection = event.target.value;
     const race = ['Black, non-Hispanic', 'White, non-Hispanic', 'Hispanic', 'Other, non-Hispanic'];
     const gender = ['Male', 'Female'];
 
-    switch (selection) {
-      case 'Arthritis (Prevalence)':
-        question = 'Arthritis among adults aged >= 18 years';
-        break;
-      case 'Asthma (Mortality Rate)':
-        question = 'Asthma mortality rate';
-        break;
-      case 'Asthma (Prevalence)':
-        question = 'Current asthma prevalence among adults aged >= 18 years';
-        break;
-      case 'COPD (Prevalence)':
-        question = 'Prevalence of chronic obstructive pulmonary disease among adults >= 18';
-        break;
-      case 'Cardiovascular Disease (Mortality Rate)':
-        question = 'Mortality from total cardiovascular diseases';
-        break;
-      case 'Chronic Liver Disease (Mortality Rate)':
-        question = 'Chronic liver disease mortality';
-        break;
-      case 'Diabetes (Mortality Rate)':
-        question = 'Mortality due to diabetes reported as any listed cause of death';
-        break;
-      case 'Diabetes (Prevalence)':
-        question = 'Prevalence of diagnosed diabetes among adults aged >= 18 years';
-        break;
-      case 'End-Stage Renal Disease (Mortality Rate)':
-        question = 'Mortality with end-stage renal disease';
-        break;
-      case 'Kidney Disease (Prevalence)':
-        question = 'Prevalence of chronic kidney disease among adults aged >= 18 years';
-        break;
-      case 'Obesity (Prevalence)':
-        question = 'Obesity among adults aged >= 18 years';
-        break;
-      case 'Stroke (Mortality Rate)':
-        question = 'Mortality from cerebrovascular disease (stroke)';
-        break;
-      default:
-        break;
-    };
+    const question = this.getDiseaseQuestion(selection);
 
     // Dynamically adjust the y-axis labels for the bar charts
     if (selection.includes('Prevalence')) {
@@ -203,7 +206,7 @@ class App extends Component {
                   <MenuItem value={'Stroke (Mortality Rate)'}>Stroke (Mortality Rate)</MenuItem>
                 </Select>
               </FormControl>
-              <DropdownWithCheckboxes></DropdownWithCheckboxes>
+              <LineSelection></LineSelection>
             </div>
             <LineChart data={this.state.data}></LineChart>
           </Box>

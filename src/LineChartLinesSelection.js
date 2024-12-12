@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Checkbox, ListItemText, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
 
-const DropdownWithCheckboxes = () => {
+const LineSelection = () => {
   const options = [
     'Male',
     'Female',
@@ -59,4 +59,4 @@ const DropdownWithCheckboxes = () => {
   );
 };
 
-export default DropdownWithCheckboxes;
+export default LineSelection;
