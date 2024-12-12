@@ -91,6 +91,34 @@ class LineChart extends Component {
           .attr('opacity', 0)
           .remove()
       )
+
+    const points = lineData.flatMap(line => line.values.map(value => ({...value, name: line.name})));
+    console.log('Line Data: ', lineData);
+    console.log('Points: ', points);
+
+    svg.selectAll('circle')
+      .data(points)
+      .join(
+        enter => enter.append('circle')
+          .attr('cx', d => xScale(parseYear(d.Year)))
+          .attr('cy', d => yScale(d.value))
+          .attr('r', 4)
+          .attr('fill', d => colorScale(d.name))
+          .attr('opacity', 0)
+          .transition()
+          .duration(1000)
+          .attr('opacity', 1),
+        update => update.transition()
+          .duration(1000)
+          .attr('cx', d => xScale(parseYear(d.Year)))
+          .attr('cy', d => yScale(d.value))
+          .attr('r', 4)
+          .attr('fill', d => colorScale(d.name)),
+        exit => exit.transition()
+          .duration(1000)
+          .attr('opacity', 0)
+          .remove(),
+      )
   }
 
   render() {
