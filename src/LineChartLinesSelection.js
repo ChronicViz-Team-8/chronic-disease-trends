@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Checkbox, ListItemText, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
 
-const LineSelection = () => {
+const LineSelection = ({ onSelectionChange }) => {
   const options = [
     'Male',
     'Female',
@@ -17,15 +17,19 @@ const LineSelection = () => {
   const handleChange = (event) => {
     const { value } = event.target;
 
+    let updatedSelection;
     if (value.includes('U.S. Regions') && !selectedOptions.includes('U.S. Regions')) {
       // If "U.S. Regions" is selected, deselect all other options
-      setSelectedOptions(['U.S. Regions']);
+      updatedSelection = ['U.S. Regions'];
     } else if (selectedOptions.includes('U.S. Regions') && !value.includes('U.S. Regions')) {
       // If "U.S. Regions" is deselected, allow other options
-      setSelectedOptions(value.filter((item) => item !== 'U.S. Regions'));
+      updatedSelection = value.filter(item => item !== 'U.S. Regions')
     } else {
-      setSelectedOptions(value);
+      updatedSelection = value;
     }
+
+    setSelectedOptions(updatedSelection);
+    onSelectionChange(updatedSelection);
   };
 
   const isRegionsSelected = selectedOptions.includes('U.S. Regions');

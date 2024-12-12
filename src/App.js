@@ -32,6 +32,7 @@ class App extends Component {
       data: [],
       selectedLineChartDisease: '',
       selectedLineChartLines: [],
+      lineChartData: [],
       barChartGenderData: [],
       barChartRaceData: [],
       selectedBarOption: '',
@@ -90,6 +91,20 @@ class App extends Component {
         break;
     };
   }
+
+  handleLineChartDiseaseChange = (event) => {
+    const selectedDisease = event.target.value;
+    const question = this.getDiseaseQuestion(selectedDisease);
+    this.setState({ selectedLineChartDisease: question }, this.processLineChartData);
+    console.log('State Update: ', question);
+  }
+
+  handleLineChartLineChange = (selectedLines) => {
+    this.setState({ selectedLineChartLines: selectedLines }, this.processLineChartData);
+    console.log('Lines Selected: ', selectedLines);
+  }
+
+  processLineChartData = () => {}
 
   handleStackAreaChange = (event) => {
     const filteredData = this.state.data.filter(d => {
@@ -172,7 +187,7 @@ class App extends Component {
 
     this.setState({ barChartGenderData: barGenderData });
     this.setState({ barChartRaceData: barRaceData });
-    this.setState({ selectedBarOption: event.target.value })
+    this.setState({ selectedBarOption: question })
   }
 
   render() {
@@ -188,6 +203,7 @@ class App extends Component {
                 <InputLabel>Select Chronic Disease</InputLabel>
                 <Select
                   label="Select Chronic Disease"
+                  onChange={this.handleLineChartDiseaseChange}
                   MenuProps={{
                     PaperProps: {
                       style: {
@@ -202,7 +218,7 @@ class App extends Component {
                   ))}
                 </Select>
               </FormControl>
-              <LineSelection></LineSelection>
+              <LineSelection onSelectionChange={this.handleLineChartLineChange}></LineSelection>
             </div>
             <LineChart data={this.state.data}></LineChart>
           </Box>
