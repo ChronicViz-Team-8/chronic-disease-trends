@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import * as d3 from 'd3';
 import { Box, FormControl, MenuItem, Select, InputLabel } from '@mui/material';
+import DropdownWithCheckboxes from './LineChartLinesSelection';
 import chronic from './cleaned_chronic_disease_indicators.csv'
 import LineChart from './lineChart';
 import StackedAreaChart from './stackedAreaChart';
@@ -174,7 +175,7 @@ class App extends Component {
         </div>
         <div className='row-model'>
           <Box className='model-box' id='line-chart-box' sx={{ boxShadow: 3 }}>
-            <div className='dropdown-row'>
+            <div className='dropdown-row' id='line-chart-options'>
               <FormControl id='dropdown-chronic-selection-linechart' sx={{ width: '250px' }}>
                 <InputLabel>Select Chronic Disease</InputLabel>
                 <Select
@@ -202,18 +203,7 @@ class App extends Component {
                   <MenuItem value={'Stroke (Mortality Rate)'}>Stroke (Mortality Rate)</MenuItem>
                 </Select>
               </FormControl>
-              <FormControl id='dropdown-line-selection-linechart' className='right-dropdown' sx={{ width: '200px' }}>
-                <InputLabel>Add a Line</InputLabel>
-                <Select label="Add a Line">
-                  <MenuItem value={'Male'}>Male</MenuItem>
-                  <MenuItem value={'Female'}>Female</MenuItem>
-                  <MenuItem value={'White, non-Hispanic'}>White, non-Hispanic</MenuItem>
-                  <MenuItem value={'Black, non-Hispanic'}>Black, non-Hispanic</MenuItem>
-                  <MenuItem value={'Hispanic'}>Hispanic</MenuItem>
-                  <MenuItem value={'Other, non-Hispanic'}>Other, non-Hispanic</MenuItem>
-                  <MenuItem value={'U.S. Regions'}>U.S. Regions</MenuItem>
-                </Select>
-              </FormControl>
+              <DropdownWithCheckboxes></DropdownWithCheckboxes>
             </div>
             <LineChart data={this.state.data}></LineChart>
           </Box>
