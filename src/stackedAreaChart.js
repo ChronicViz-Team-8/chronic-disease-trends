@@ -7,6 +7,11 @@ class StackedAreaChart extends Component {
     this.getModel();
   }
 
+  shouldComponentUpdate(nextProps) {
+    return JSON.stringify(this.props.data) !== JSON.stringify(nextProps.data) ||
+      this.props.ylabel !== nextProps.ylabel;
+  }
+
   getModel() {
     const data = this.props.data;
     const questions = this.props.questions;
