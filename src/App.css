@@ -79,7 +79,7 @@
   height: 430px;
   max-height: 430px;
 }
-#stacked-area-container {
+.models {
   display: flex;
   justify-content: center;
 }

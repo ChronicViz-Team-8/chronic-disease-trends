@@ -255,7 +255,9 @@ class App extends Component {
               </FormControl>
               <LineSelection onSelectionChange={this.handleLineChartLineChange}></LineSelection>
             </div>
-            <LineChart data={this.state.lineChartData}></LineChart>
+            <div className='models'>
+              <LineChart data={this.state.lineChartData}></LineChart>
+            </div>
           </Box>
           <Box className='model-box' id='treemap-box' sx={{ boxShadow: 3 }}> { }
             <div className='dropdown-row'>
@@ -305,7 +307,7 @@ class App extends Component {
                 </Select>
               </FormControl>
             </div>
-            <div id='barchart-row'>
+            <div className='models' id='barchart-row'>
               <BarChartRace data={this.state.barChartRaceData} ylabel={this.state.yAxisLabel}></BarChartRace>
               <BarChartGender data={this.state.barChartGenderData} ylabel={this.state.yAxisLabel}></BarChartGender>
             </div>
@@ -320,7 +322,7 @@ class App extends Component {
                 </Select>
               </FormControl>
             </div>
-            <div id='stacked-area-container'>
+            <div className='models' id='stacked-area-container'>
               <StackedAreaChart data={this.state.stackedAreaData} questions={this.state.stackedAreaQuestions}></StackedAreaChart>
             </div>
           </Box>
