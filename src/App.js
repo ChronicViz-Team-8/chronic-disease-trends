@@ -33,6 +33,8 @@ class App extends Component {
       selectedLineChartDisease: '',
       selectedLineChartLines: [],
       lineChartData: [],
+      selectedTreemapMetric: '',
+      selectedTreemapYear: '',
       barChartGenderData: [],
       barChartRaceData: [],
       selectedBarOption: '',
@@ -96,15 +98,48 @@ class App extends Component {
     const selectedDisease = event.target.value;
     const question = this.getDiseaseQuestion(selectedDisease);
     this.setState({ selectedLineChartDisease: question }, this.processLineChartData);
-    console.log('State Update: ', question);
   }
 
   handleLineChartLineChange = (selectedLines) => {
     this.setState({ selectedLineChartLines: selectedLines }, this.processLineChartData);
-    console.log('Lines Selected: ', selectedLines);
   }
 
-  processLineChartData = () => {}
+  processLineChartData = () => {
+    const question = this.state.selectedLineChartDisease;
+    const linesSelected = this.state.selectedLineChartLines;
+
+    if (!question || linesSelected.length === 0) {
+      this.setState({ lineChartData: [] });
+      return;
+    }
+
+    const filteredData = this.state.data.filter(d => d.Question === question);
+    const regions = ['Midwest', 'Northeast', 'South', 'West']
+    const years = Array.from(new Set(filteredData.map(d => d.Year))).sort();
+    const chartData = years.map(year => {
+      const row = { Year: year };
+
+      if (linesSelected.includes('U.S. Regions')) {
+        regions.forEach(region => {
+          const regionValues = filteredData.filter(d => d.Year === year && d.Region === region);
+          const avg = regionValues.reduce((sum, d) => sum + d.Value, 0) / regionValues.length;
+
+          row[region] = avg;
+        })
+      } else {
+        linesSelected.forEach(stratification => {
+          const stratValues = filteredData.filter(d => d.Year === year && d.Stratification === stratification);
+          const avg = stratValues.reduce((sum, d) => sum + d.Value, 0) / stratValues.length;
+          
+          row[stratification] = avg;
+        })
+      }
+
+      return row;
+    });
+
+    this.setState({ lineChartData: chartData });
+  }
 
   handleStackAreaChange = (event) => {
     const filteredData = this.state.data.filter(d => {
@@ -220,7 +255,7 @@ class App extends Component {
               </FormControl>
               <LineSelection onSelectionChange={this.handleLineChartLineChange}></LineSelection>
             </div>
-            <LineChart data={this.state.data}></LineChart>
+            <LineChart data={this.state.lineChartData}></LineChart>
           </Box>
           <Box className='model-box' id='treemap-box' sx={{ boxShadow: 3 }}> { }
             <div className='dropdown-row'>
