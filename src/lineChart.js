@@ -8,8 +8,6 @@ class LineChart extends Component {
 
   getModel() {
     const { data } = this.props;
-    
-    if (!data || data.length === 0) return;
 
     // Setup SVG Environment
     const margin = { top: 50, bottom: 50, right: 130, left: 60 }
@@ -24,8 +22,14 @@ class LineChart extends Component {
       .select('g')
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
+    if (!data.some(d => Object.keys(d).length > 1)) {
+      svg.selectAll('*').remove();
+      return;
+    }
+
+    if (!data || data.length === 0) return;
+
     const parseYear = d3.timeParse('%Y');
-    const years = data.map(d => parseYear(d.Year));
 
     // Create Scales
     const xScale = d3.scaleTime()
@@ -37,8 +41,8 @@ class LineChart extends Component {
       .range([innerHeight, 0]);
     
     const colorScale = d3.scaleOrdinal()
-      .domain(['Black, non-Hispanic', 'White, non-Hispanic', 'Hispanic', 'Other, non-Hispanic', 'Male', 'Female'])
-      .range(['#4472c4', '#f1b7a3', '#c5e0b4', '#c8a7ed', '#7EC8E3', '#F5A3C7']);
+      .domain(['Black, non-Hispanic', 'White, non-Hispanic', 'Hispanic', 'Other, non-Hispanic', 'Male', 'Female', 'Midwest', 'South', 'Northeast', 'West'])
+      .range(['#4472c4', '#f1b7a3', '#c5e0b4', '#c8a7ed', '#7EC8E3', '#F5A3C7', '#5979a4', '#d15c5b', '#e48e38', '#82b5b0']);
     
     // Create Axis
     svg.selectAll('.x-axis')
@@ -65,15 +69,28 @@ class LineChart extends Component {
       values: data.map(d => ({ Year: d.Year, value: d[type]}))
     }));
 
-    // Draw the lines
     svg.selectAll('.line')
       .data(lineData)
-      .join('path')
-      .attr('class', 'line')
-      .attr('d', d => lineGen(d.values))
-      .attr('fill', 'none')
-      .attr('stroke', d => colorScale(d.name))
-      .attr('stroke-width', 4);
+      .join(
+        enter => enter.append('path')
+          .attr('class', 'line')
+          .attr('d', d => lineGen(d.values))
+          .attr('fill', 'none')
+          .attr('stroke', d => colorScale(d.name))
+          .attr('stroke-width', 3)
+          .attr('opacity', 0)
+          .transition()
+          .duration(1000)
+          .attr('opacity', 1),
+        update => update.transition()
+          .duration(1000)
+          .attr('d', d => lineGen(d.values))
+          .attr('stroke', d => colorScale(d.name)),
+        exit => exit.transition()
+          .duration(1000)
+          .attr('opacity', 0)
+          .remove()
+      )
   }
 
   render() {

@@ -12,3 +12,8 @@ Black, non-Hispanic:  #4472c4 (blue)
 White, non-Hispanic:  #f1b7a3 (beige)
 Hispanic:  #c5e0b4 (green)
 Other, non-Hispanic:  #c8a7ed (some shade of pink mixed with purple)
+
+Midwest: #5979a4
+South: #d15c5b
+Northeast: #e48e38
+West: #82b5b0
