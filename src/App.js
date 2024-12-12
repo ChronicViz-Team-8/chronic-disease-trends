@@ -10,11 +10,28 @@ import BarChartRace from './barChartRace';
 import BarChartGender from './barChartGender';
 import Treemap from './treemap';
 
+const chronicDiseaseOpt = [
+  'Arthritis (Prevalence)',
+  'Asthma (Mortality Rate)',
+  'Asthma (Prevalence)',
+  'COPD (Prevalence)',
+  'Cardiovascular Disease (Mortality Rate)',
+  'Chronic Liver Disease (Mortality Rate)',
+  'Diabetes (Mortality Rate)',
+  'Diabetes (Prevalence)',
+  'End-Stage Renal Disease (Mortality Rate)',
+  'Kidney Disease (Prevalence)',
+  'Obesity (Prevalence)',
+  'Stroke (Mortality Rate)'
+]
+
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: [],
+      selectedLineChartDisease: '',
+      selectedLineChartLines: [],
       barChartGenderData: [],
       barChartRaceData: [],
       selectedBarOption: '',
@@ -47,40 +64,28 @@ class App extends Component {
     switch (selection) {
       case 'Arthritis (Prevalence)':
         return 'Arthritis among adults aged >= 18 years';
-        break;
       case 'Asthma (Mortality Rate)':
         return 'Asthma mortality rate';
-        break;
       case 'Asthma (Prevalence)':
         return 'Current asthma prevalence among adults aged >= 18 years';
-        break;
       case 'COPD (Prevalence)':
         return 'Prevalence of chronic obstructive pulmonary disease among adults >= 18';
-        break;
       case 'Cardiovascular Disease (Mortality Rate)':
         return 'Mortality from total cardiovascular diseases';
-        break;
       case 'Chronic Liver Disease (Mortality Rate)':
         return 'Chronic liver disease mortality';
-        break;
       case 'Diabetes (Mortality Rate)':
         return 'Mortality due to diabetes reported as any listed cause of death';
-        break;
       case 'Diabetes (Prevalence)':
         return 'Prevalence of diagnosed diabetes among adults aged >= 18 years';
-        break;
       case 'End-Stage Renal Disease (Mortality Rate)':
         return 'Mortality with end-stage renal disease';
-        break;
       case 'Kidney Disease (Prevalence)':
         return 'Prevalence of chronic kidney disease among adults aged >= 18 years';
-        break;
       case 'Obesity (Prevalence)':
         return 'Obesity among adults aged >= 18 years';
-        break;
       case 'Stroke (Mortality Rate)':
         return 'Mortality from cerebrovascular disease (stroke)';
-        break;
       default:
         break;
     };
@@ -192,18 +197,9 @@ class App extends Component {
                     },
                   }}
                 >
-                  <MenuItem value={'Arthritis (Prevalence)'}>Arthritis (Prevalence)</MenuItem>
-                  <MenuItem value={'Asthma (Mortality Rate)'}>Asthma (Mortality Rate)</MenuItem>
-                  <MenuItem value={'Asthma (Prevalence)'}>Asthma (Prevalence)</MenuItem>
-                  <MenuItem value={'COPD (Prevalence)'}>COPD (Prevalence)</MenuItem>
-                  <MenuItem value={'Cardiovascular Disease (Mortality Rate)'}>Cardiovascular Disease (Mortality Rate)</MenuItem>
-                  <MenuItem value={'Chronic Liver Disease (Mortality Rate)'}>Chronic Liver Disease (Mortality Rate)</MenuItem>
-                  <MenuItem value={'Diabetes (Mortality Rate)'}>Diabetes (Mortality Rate)</MenuItem>
-                  <MenuItem value={'Diabetes (Prevalence)'}>Diabetes (Prevalence)</MenuItem>
-                  <MenuItem value={'End-Stage Renal Disease (Mortality Rate)'}>End-Stage Renal Disease (Mortality Rate)</MenuItem>
-                  <MenuItem value={'Kidney Disease (Prevalence)'}>Kidney Disease (Prevalence)</MenuItem>
-                  <MenuItem value={'Obesity (Prevalence)'}>Obesity (Prevalence)</MenuItem>
-                  <MenuItem value={'Stroke (Mortality Rate)'}>Stroke (Mortality Rate)</MenuItem>
+                  {chronicDiseaseOpt.map((disease) => (
+                    <MenuItem value={disease}>{disease}</MenuItem>
+                  ))}
                 </Select>
               </FormControl>
               <LineSelection></LineSelection>
@@ -222,16 +218,12 @@ class App extends Component {
               <FormControl id='dropdown-year-treemap' className='right-dropdown' sx={{ width: '200px' }}>
                 <InputLabel>Select a Year</InputLabel>
                 <Select label="Select a Year">
-                  <MenuItem value={2011}>2011</MenuItem>
-                  <MenuItem value={2012}>2012</MenuItem>
-                  <MenuItem value={2013}>2013</MenuItem>
-                  <MenuItem value={2014}>2014</MenuItem>
-                  <MenuItem value={2015}>2015</MenuItem>
-                  <MenuItem value={2016}>2016</MenuItem>
-                  <MenuItem value={2017}>2017</MenuItem>
-                  <MenuItem value={2018}>2018</MenuItem>
-                  <MenuItem value={2019}>2019</MenuItem>
-                  <MenuItem value={2020}>2020</MenuItem>
+                  {[...Array(10)].map((_, index) => {
+                    const year = 2011 + index;
+                    return (
+                      <MenuItem value={year}>{year}</MenuItem>
+                    );
+                  })}
                 </Select>
               </FormControl>
             </div>
@@ -256,18 +248,9 @@ class App extends Component {
                     },
                   }}
                 >
-                  <MenuItem value={'Arthritis (Prevalence)'}>Arthritis (Prevalence)</MenuItem>
-                  <MenuItem value={'Asthma (Mortality Rate)'}>Asthma (Mortality Rate)</MenuItem>
-                  <MenuItem value={'Asthma (Prevalence)'}>Asthma (Prevalence)</MenuItem>
-                  <MenuItem value={'COPD (Prevalence)'}>COPD (Prevalence)</MenuItem>
-                  <MenuItem value={'Cardiovascular Disease (Mortality Rate)'}>Cardiovascular Disease (Mortality Rate)</MenuItem>
-                  <MenuItem value={'Chronic Liver Disease (Mortality Rate)'}>Chronic Liver Disease (Mortality Rate)</MenuItem>
-                  <MenuItem value={'Diabetes (Mortality Rate)'}>Diabetes (Mortality Rate)</MenuItem>
-                  <MenuItem value={'Diabetes (Prevalence)'}>Diabetes (Prevalence)</MenuItem>
-                  <MenuItem value={'End-Stage Renal Disease (Mortality Rate)'}>End-Stage Renal Disease (Mortality Rate)</MenuItem>
-                  <MenuItem value={'Kidney Disease (Prevalence)'}>Kidney Disease (Prevalence)</MenuItem>
-                  <MenuItem value={'Obesity (Prevalence)'}>Obesity (Prevalence)</MenuItem>
-                  <MenuItem value={'Stroke (Mortality Rate)'}>Stroke (Mortality Rate)</MenuItem>
+                  {chronicDiseaseOpt.map((disease) => (
+                    <MenuItem value={disease}>{disease}</MenuItem>
+                  ))}
                 </Select>
               </FormControl>
             </div>
