@@ -23,6 +23,12 @@ class Treemap extends Component {
     }
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return JSON.stringify(this.props.data) !== JSON.stringify(nextProps.data) ||
+      nextState.selectedMetric !== this.state.selectedMetric ||
+      nextState.selectedYear !== this.state.selectedYear;
+  }
+
   processData = () => {
     const { data } = this.props;
     const { selectedMetric, selectedYear } = this.state;
@@ -128,33 +134,79 @@ class Treemap extends Component {
 
     console.log('root.leaves()', rootNode.leaves());
 
+    const tooltip = d3.select('body').selectAll('.treemap-tooltip')
+      .data([null])
+      .join('div')
+      .attr('class', 'treemap-tooltip')
+      .style('position', 'absolute')
+      .style('background', 'white')
+      .style('padding', '5px')
+      .style('border-radius', '10px')
+      .style('border', '1px solid gray')
+      .style('font-size', '14px')
+      .style('visibility', 'hidden');
+
     g.selectAll('rect')
-    .data(rootNode.leaves())
-    .join(
-      enter => enter.append('rect')
-        .attr('x', d => d.x0 + (d.x1 - d.x0) / 2)
-        .attr('y', d => d.y0 + (d.y1 - d.y0) / 2)
-        .attr('width', 0)
-        .attr('height', 0)
-        .style('fill', d => regionColorScale(d.data.name))
-        .style('stroke', 'white')
-        .transition().duration(1000)
-        .ease(d3.easeQuadOut) 
-        .attr('x', d => d.x0)
-        .attr('y', d => d.y0)
-        .attr('width', d => d.x1 - d.x0)
-        .attr('height', d => d.y1 - d.y0),
-      update => update.transition().duration(1000)
-        .ease(d3.easeQuadIn)
-        .attr('x', d => d.x0)
-        .attr('y', d => d.y0)
-        .attr('width', d => d.x1 - d.x0)
-        .attr('height', d => d.y1 - d.y0),
-      exit => exit.transition().duration(1000)
-        .attr('width', 0)
-        .attr('height', 0)
-        .remove()
-    );
+      .data(rootNode.leaves())
+      .join(
+        enter => enter.append('rect')
+          .attr('x', d => d.x0 + (d.x1 - d.x0) / 2)
+          .attr('y', d => d.y0 + (d.y1 - d.y0) / 2)
+          .attr('width', 0)
+          .attr('height', 0)
+          .style('fill', d => regionColorScale(d.data.name))
+          .style('stroke', 'white')
+          .on('mouseover', (event, d) => {
+            const totalContribution = rootNode.value; 
+            const topicAbsoluteValue = d.parent.value;
+            const topicContributionPercentage = (d.parent.value / totalContribution) * 100; 
+            const regionContribution = d.value; 
+
+            let tooltipContent = `<strong>Topic</strong>: ${d.parent.data.name}<br>`;
+
+            if (this.state.selectedMetric === 'Prevalence') {
+              tooltipContent += `
+                <strong>Topic Contribution</strong>: ${topicContributionPercentage.toFixed(2)}%<br>
+                <strong>Region</strong>: ${d.data.name}<br>
+                <strong>Region Contribution</strong>: ${regionContribution.toFixed(2)}%
+              `;
+            } else if (this.state.selectedMetric === 'Mortality Rate') {
+              tooltipContent += `
+                <strong>Topic Contribution</strong>: ${topicAbsoluteValue.toFixed(2)} deaths per 100,000<br>
+                <strong>Region</strong>: ${d.data.name}<br>
+                <strong>Region Contribution</strong>: ${regionContribution.toFixed(2)} deaths per 100,000
+              `;
+            }
+
+            tooltip
+              .style('visibility', 'visible')
+              .html(tooltipContent);
+          })
+          .on('mousemove', (event) => {
+            tooltip
+              .style('top', `${event.pageY + 10}px`)
+              .style('left', `${event.pageX + 10}px`);
+          })
+          .on('mouseout', () => {
+            tooltip.style('visibility', 'hidden');
+          })
+          .transition().duration(1000)
+          .ease(d3.easeQuadOut)
+          .attr('x', d => d.x0)
+          .attr('y', d => d.y0)
+          .attr('width', d => d.x1 - d.x0)
+          .attr('height', d => d.y1 - d.y0),
+        update => update.transition().duration(1000)
+          .ease(d3.easeQuadIn)
+          .attr('x', d => d.x0)
+          .attr('y', d => d.y0)
+          .attr('width', d => d.x1 - d.x0)
+          .attr('height', d => d.y1 - d.y0),
+        exit => exit.transition().duration(1000)
+          .attr('width', 0)
+          .attr('height', 0)
+          .remove()
+      );
 
     g.selectAll('.region-label')
       .data(rootNode.leaves())
