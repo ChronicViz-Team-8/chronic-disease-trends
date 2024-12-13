@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
-import { FormControl, MenuItem, Select, InputLabel } from '@mui/material';
+import { FormControl, MenuItem, Select, InputLabel, Typography } from '@mui/material';
 
 class Treemap extends Component {
   constructor(props) {
@@ -8,7 +8,8 @@ class Treemap extends Component {
     this.state = {
       processedData: null,
       selectedMetric: '',
-      selectedYear: '2011'
+      selectedYear: '2011',
+      title: ''
     };
   }
 
@@ -21,6 +22,12 @@ class Treemap extends Component {
       prevProps.selectedYear !== this.state.selectedYear) {
       this.renderTreeMap();
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return JSON.stringify(this.props.data) !== JSON.stringify(nextProps.data) ||
+      nextState.selectedMetric !== this.state.selectedMetric ||
+      nextState.selectedYear !== this.state.selectedYear;
   }
 
   processData = () => {
@@ -78,9 +85,15 @@ class Treemap extends Component {
   }
 
   handleMetricChange = (event) => {
-    this.setState({ selectedMetric: event.target.value }, () => {
-      this.renderTreeMap();
-    });
+    const metric = event.target.value;
+    this.setState({ selectedMetric: metric },
+      this.setState({
+        title: metric === 'Prevalence' ?
+          "Prevalence of Chronic Diseases by Topic and Region (%)" :
+          "Mortality Rate of Chronic Diseases by Topic and Region\n(deaths per 100,000)"
+      }), () => {
+        this.renderTreeMap();
+      });
   }
 
   handleYearChange = (event) => {
@@ -128,23 +141,87 @@ class Treemap extends Component {
 
     console.log('root.leaves()', rootNode.leaves());
 
+    const tooltip = d3.select('body').selectAll('.treemap-tooltip')
+      .data([null])
+      .join('div')
+      .attr('class', 'treemap-tooltip')
+      .style('position', 'absolute')
+      .style('background', 'white')
+      .style('padding', '5px')
+      .style('border-radius', '10px')
+      .style('border', '1px solid gray')
+      .style('font-size', '14px')
+      .style('visibility', 'hidden');
+
     g.selectAll('rect')
       .data(rootNode.leaves())
-      .join('rect')
-      .attr('x', d => d.x0)
-      .attr('y', d => d.y0)
-      .attr('width', d => d.x1 - d.x0)
-      .attr('height', d => d.y1 - d.y0)
-      .style('stroke', 'white')
-      .attr('show_name', d => console.log(d))
-      .style('fill', d => regionColorScale(d.data.name));
+      .join(
+        enter => enter.append('rect')
+          .attr('x', d => d.x0 + (d.x1 - d.x0) / 2)
+          .attr('y', d => d.y0 + (d.y1 - d.y0) / 2)
+          .attr('width', 0)
+          .attr('height', 0)
+          .style('fill', d => regionColorScale(d.data.name))
+          .style('stroke', 'white')
+          .on('mouseover', (event, d) => {
+            const totalContribution = rootNode.value;
+            const topicAbsoluteValue = d.parent.value;
+            const topicContributionPercentage = (d.parent.value / totalContribution) * 100;
+            const regionContribution = d.value;
+
+            let tooltipContent = `<strong>Topic</strong>: ${d.parent.data.name}<br>`;
+
+            if (this.state.selectedMetric === 'Prevalence') {
+              tooltipContent += `
+                <strong>Topic Contribution</strong>: ${topicContributionPercentage.toFixed(2)}%<br>
+                <strong>Region</strong>: ${d.data.name}<br>
+                <strong>Region Contribution</strong>: ${regionContribution.toFixed(2)}%
+              `;
+            } else if (this.state.selectedMetric === 'Mortality Rate') {
+              tooltipContent += `
+                <strong>Topic Contribution</strong>: ${topicAbsoluteValue.toFixed(2)} deaths per 100,000<br>
+                <strong>Region</strong>: ${d.data.name}<br>
+                <strong>Region Contribution</strong>: ${regionContribution.toFixed(2)} deaths per 100,000
+              `;
+            }
+
+            tooltip
+              .style('visibility', 'visible')
+              .html(tooltipContent);
+          })
+          .on('mousemove', (event) => {
+            tooltip
+              .style('top', `${event.pageY + 10}px`)
+              .style('left', `${event.pageX + 10}px`);
+          })
+          .on('mouseout', () => {
+            tooltip.style('visibility', 'hidden');
+          })
+          .transition().duration(1000)
+          .ease(d3.easeQuadOut)
+          .attr('x', d => d.x0)
+          .attr('y', d => d.y0)
+          .attr('width', d => d.x1 - d.x0)
+          .attr('height', d => d.y1 - d.y0),
+        update => update.transition().duration(1000)
+          .ease(d3.easeQuadIn)
+          .attr('x', d => d.x0)
+          .attr('y', d => d.y0)
+          .attr('width', d => d.x1 - d.x0)
+          .attr('height', d => d.y1 - d.y0),
+        exit => exit.transition().duration(1000)
+          .attr('width', 0)
+          .attr('height', 0)
+          .remove()
+      );
 
     g.selectAll('.region-label')
       .data(rootNode.leaves())
       .join('text')
       .attr('class', 'region-label')
-      .attr('x', d => d.x0 + (d.x1 - d.x0) * .50)
       .attr('y', d => d.y0 + (d.y1 - d.y0) * .35)
+      .transition().duration(1000)
+      .attr('x', d => d.x0 + (d.x1 - d.x0) * .50)
       .attr('text-anchor', 'middle')
       .attr('font-size', d => {
         const width = d.x1 - d.x0;
@@ -171,13 +248,14 @@ class Treemap extends Component {
       .data(rootNode.leaves())
       .join("text")
       .attr("class", "value-label")
-      .attr("x", d => d.x0 + (d.x1 - d.x0) / 2)
       .attr("y", d => d.y0 + (d.y1 - d.y0) * .65)
+      .transition().duration(1000)
+      .attr("x", d => d.x0 + (d.x1 - d.x0) / 2)
       .attr("text-anchor", "middle")
       .attr("font-size", d => {
         const width = d.x1 - d.x0;
         const height = d.y1 - d.y0;
-        return Math.max(Math.min(width / 5, height / 2, Math.sqrt((width * width + height * height)) / 12), 11) + "px";
+        return Math.max(Math.min(width / 5, height / 2, Math.sqrt((width * width + height * height)) / 12), 10) + "px";
       })
       .text(d => this.state.selectedMetric === 'Mortality Rate'
         ? `${d.value.toFixed(1)}`
@@ -190,11 +268,13 @@ class Treemap extends Component {
       .join('text')
       .attr('class', 'topic-title')
       .attr('x', d => d.x0 + (d.x1 - d.x0) / 2)
+      .transition().duration(1000)
       .attr('y', d => d.y0 + 10)
       .text(d => d.data.name
         .replace('Chronic Kidney Disease', 'CKD')
         .replace('Chronic Obstructive Pulmonary Disease', 'COPD')
         .replace('Nutrition, Physical Activity, and Weight Status', 'Nutrition & PA')
+        .replace('Cardiovascular Disease', 'CVD')
       )
       .attr('text-anchor', 'middle')
       .attr("font-size", d => {
@@ -203,7 +283,6 @@ class Treemap extends Component {
         return Math.max(Math.min(width / 5, height / 2, Math.sqrt((width * width + height * height)) / 20), 12) + "px";
       })
       .attr('font-weight', 'bold')
-
   }
 
   render() {
@@ -221,6 +300,9 @@ class Treemap extends Component {
               <MenuItem value={'Mortality Rate'}>Mortality Rate</MenuItem>
             </Select>
           </FormControl>
+          <Typography sx={{ fontSize: 16, marginTop: 2, whiteSpace: 'pre-line', textAlign: 'center', fontWeight: 'bold' }}> {/* whiteSpace: 'pre-line' used to interpret '\n'*/}
+            {this.state.title}
+          </Typography>
           <FormControl id='dropdown-year-treemap' className='right-dropdown' sx={{ width: '200px' }}>
             <InputLabel>Select a Year</InputLabel>
             <Select
@@ -238,9 +320,12 @@ class Treemap extends Component {
             </Select>
           </FormControl>
         </div>
-        <svg id="treemap-container" width="580" height="400">
-          <g id="treemap-group"></g>
-        </svg>
+        <div className='models'>
+          <svg id="treemap-container" width="580" height="400">
+            <g id="treemap-group"></g>
+          </svg>
+        </div>
+
       </div>
     );
   }
