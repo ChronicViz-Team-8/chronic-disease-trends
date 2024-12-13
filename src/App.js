@@ -56,7 +56,8 @@ class App extends Component {
         Question: d.Question,
         Stratification: d.Stratification1,
         Value: +d.DataValue,
-        DataType: d.DataValueType
+        DataType: d.DataValueType,
+        Topic: d.Topic
       }))
 
       self.setState({ data: processedData })
@@ -259,27 +260,7 @@ class App extends Component {
               <LineChart data={this.state.lineChartData}></LineChart>
             </div>
           </Box>
-          <Box className='model-box' id='treemap-box' sx={{ boxShadow: 3 }}> { }
-            <div className='dropdown-row'>
-              <FormControl id='dropdown-metric-treemap' sx={{ width: '200px' }}>
-                <InputLabel>Select a Metric</InputLabel>
-                <Select label="Select a Metric">
-                  <MenuItem value={'Prevalence'}>Prevalence</MenuItem>
-                  <MenuItem value={'Mortality Rate'}>Mortality Rate</MenuItem>
-                </Select>
-              </FormControl>
-              <FormControl id='dropdown-year-treemap' className='right-dropdown' sx={{ width: '200px' }}>
-                <InputLabel>Select a Year</InputLabel>
-                <Select label="Select a Year">
-                  {[...Array(10)].map((_, index) => {
-                    const year = 2011 + index;
-                    return (
-                      <MenuItem value={year}>{year}</MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-            </div>
+          <Box className='model-box' id='treemap-box' sx={{ boxShadow: 3 }}>
             <Treemap data={this.state.data}></Treemap>
           </Box>
         </div>
