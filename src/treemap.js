@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
-import { FormControl, MenuItem, Select, InputLabel } from '@mui/material';
+import { FormControl, MenuItem, Select, InputLabel, Typography } from '@mui/material';
 
 class Treemap extends Component {
   constructor(props) {
@@ -8,7 +8,8 @@ class Treemap extends Component {
     this.state = {
       processedData: null,
       selectedMetric: '',
-      selectedYear: '2011'
+      selectedYear: '2011',
+      title: ''
     };
   }
 
@@ -84,9 +85,15 @@ class Treemap extends Component {
   }
 
   handleMetricChange = (event) => {
-    this.setState({ selectedMetric: event.target.value }, () => {
-      this.renderTreeMap();
-    });
+    const metric = event.target.value;
+    this.setState({ selectedMetric: metric },
+      this.setState({
+        title: metric === 'Prevalence' ?
+          "Prevalence of Chronic Diseases by Topic and Region (%)" :
+          "Mortality Rate of Chronic Diseases by Topic and Region\n(deaths per 100,000)"
+      }), () => {
+        this.renderTreeMap();
+      });
   }
 
   handleYearChange = (event) => {
@@ -276,7 +283,6 @@ class Treemap extends Component {
         return Math.max(Math.min(width / 5, height / 2, Math.sqrt((width * width + height * height)) / 20), 12) + "px";
       })
       .attr('font-weight', 'bold')
-
   }
 
   render() {
@@ -294,6 +300,9 @@ class Treemap extends Component {
               <MenuItem value={'Mortality Rate'}>Mortality Rate</MenuItem>
             </Select>
           </FormControl>
+          <Typography sx={{ fontSize: 16, marginTop: 2, whiteSpace: 'pre-line', textAlign: 'center', fontWeight: 'bold' }}> {/* whiteSpace: 'pre-line' used to interpret '\n'*/}
+            {this.state.title}
+          </Typography>
           <FormControl id='dropdown-year-treemap' className='right-dropdown' sx={{ width: '200px' }}>
             <InputLabel>Select a Year</InputLabel>
             <Select
