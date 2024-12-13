@@ -195,6 +195,7 @@ class Treemap extends Component {
         .replace('Chronic Kidney Disease', 'CKD')
         .replace('Chronic Obstructive Pulmonary Disease', 'COPD')
         .replace('Nutrition, Physical Activity, and Weight Status', 'Nutrition & PA')
+        .replace('Cardiovascular Disease', 'CVD')
       )
       .attr('text-anchor', 'middle')
       .attr("font-size", d => {
