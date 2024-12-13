@@ -122,7 +122,7 @@ class App extends Component {
 
       if (linesSelected.includes('U.S. Regions')) {
         regions.forEach(region => {
-          const regionValues = filteredData.filter(d => d.Year === year && d.Region === region);
+          const regionValues = filteredData.filter(d => d.Year === year && d.Region === region && (d.Stratification !== 'Male' && d.Stratification !== 'Female'));
           const avg = regionValues.reduce((sum, d) => sum + d.Value, 0) / regionValues.length;
 
           row[region] = avg;
@@ -144,11 +144,15 @@ class App extends Component {
 
   handleStackAreaChange = (event) => {
     const filteredData = this.state.data.filter(d => {
+      const isNotGender = d.Stratification !== 'Male' && d.Stratification !== 'Female';
+
       if (event.target.value === 'Mortality Rate') {
-        return d.Question.toLowerCase().includes('mortality')
+        return isNotGender && d.Question.toLowerCase().includes('mortality');
       } else if (event.target.value === 'Prevalence') {
-        return !d.Question.toLowerCase().includes('mortality')
+        return isNotGender && !d.Question.toLowerCase().includes('mortality');
       }
+
+      return false;
     });
     // console.log('mortalityData: ', mortalityData); // Delete
 
