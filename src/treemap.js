@@ -129,22 +129,40 @@ class Treemap extends Component {
     console.log('root.leaves()', rootNode.leaves());
 
     g.selectAll('rect')
-      .data(rootNode.leaves())
-      .join('rect')
-      .attr('x', d => d.x0)
-      .attr('y', d => d.y0)
-      .attr('width', d => d.x1 - d.x0)
-      .attr('height', d => d.y1 - d.y0)
-      .style('stroke', 'white')
-      .attr('show_name', d => console.log(d))
-      .style('fill', d => regionColorScale(d.data.name));
+    .data(rootNode.leaves())
+    .join(
+      enter => enter.append('rect')
+        .attr('x', d => d.x0 + (d.x1 - d.x0) / 2)
+        .attr('y', d => d.y0 + (d.y1 - d.y0) / 2)
+        .attr('width', 0)
+        .attr('height', 0)
+        .style('fill', d => regionColorScale(d.data.name))
+        .style('stroke', 'white')
+        .transition().duration(1000)
+        .ease(d3.easeQuadOut) 
+        .attr('x', d => d.x0)
+        .attr('y', d => d.y0)
+        .attr('width', d => d.x1 - d.x0)
+        .attr('height', d => d.y1 - d.y0),
+      update => update.transition().duration(1000)
+        .ease(d3.easeQuadIn)
+        .attr('x', d => d.x0)
+        .attr('y', d => d.y0)
+        .attr('width', d => d.x1 - d.x0)
+        .attr('height', d => d.y1 - d.y0),
+      exit => exit.transition().duration(1000)
+        .attr('width', 0)
+        .attr('height', 0)
+        .remove()
+    );
 
     g.selectAll('.region-label')
       .data(rootNode.leaves())
       .join('text')
       .attr('class', 'region-label')
-      .attr('x', d => d.x0 + (d.x1 - d.x0) * .50)
       .attr('y', d => d.y0 + (d.y1 - d.y0) * .35)
+      .transition().duration(1000)
+      .attr('x', d => d.x0 + (d.x1 - d.x0) * .50)
       .attr('text-anchor', 'middle')
       .attr('font-size', d => {
         const width = d.x1 - d.x0;
@@ -171,13 +189,14 @@ class Treemap extends Component {
       .data(rootNode.leaves())
       .join("text")
       .attr("class", "value-label")
-      .attr("x", d => d.x0 + (d.x1 - d.x0) / 2)
       .attr("y", d => d.y0 + (d.y1 - d.y0) * .65)
+      .transition().duration(1000)
+      .attr("x", d => d.x0 + (d.x1 - d.x0) / 2)
       .attr("text-anchor", "middle")
       .attr("font-size", d => {
         const width = d.x1 - d.x0;
         const height = d.y1 - d.y0;
-        return Math.max(Math.min(width / 5, height / 2, Math.sqrt((width * width + height * height)) / 12), 11) + "px";
+        return Math.max(Math.min(width / 5, height / 2, Math.sqrt((width * width + height * height)) / 12), 10) + "px";
       })
       .text(d => this.state.selectedMetric === 'Mortality Rate'
         ? `${d.value.toFixed(1)}`
@@ -190,6 +209,7 @@ class Treemap extends Component {
       .join('text')
       .attr('class', 'topic-title')
       .attr('x', d => d.x0 + (d.x1 - d.x0) / 2)
+      .transition().duration(1000)
       .attr('y', d => d.y0 + 10)
       .text(d => d.data.name
         .replace('Chronic Kidney Disease', 'CKD')
