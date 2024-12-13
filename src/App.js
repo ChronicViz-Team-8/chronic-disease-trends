@@ -40,7 +40,7 @@ class App extends Component {
       selectedBarOption: '',
       stackedAreaData: [],
       stackedAreaQuestions: [],
-      selectedStackMetric: '',
+      selectedStackRegion: '',
       yAxisLabel: 'Rate',
     };
   }
@@ -143,25 +143,19 @@ class App extends Component {
   }
 
   handleStackAreaChange = (event) => {
-    const filteredData = this.state.data.filter(d => {
-      const isNotGender = d.Stratification !== 'Male' && d.Stratification !== 'Female';
+    const selectedRegion = event.target.value;
 
-      if (event.target.value === 'Mortality Rate') {
-        return isNotGender && d.Question.toLowerCase().includes('mortality');
-      } else if (event.target.value === 'Prevalence') {
-        return isNotGender && !d.Question.toLowerCase().includes('mortality');
-      }
-
-      return false;
-    });
-    // console.log('mortalityData: ', mortalityData); // Delete
+    const filteredData = this.state.data.filter(d =>
+      d.Region === selectedRegion &&
+      d.Stratification !== 'Male' &&
+      d.Stratification !== 'Female' &&
+      d.Question.toLowerCase().includes('mortality')
+    );
 
     const groupByQuestion = d3.group(filteredData, d => d.Question);
-    // console.log('Grouped by Question Data: ', groupByQuestion); // Delete
 
     // Data Prep for Stacking
     const years = Array.from(new Set(filteredData.map(d => d.Year))).sort();
-    // console.log('Years: ', years); // Delete
 
     const stackData = years.map(year => {
       const row = { Year: year };
@@ -176,7 +170,7 @@ class App extends Component {
     console.log('Stack Data: ', stackData);
 
     this.setState({ stackedAreaData: stackData });
-    this.setState({ selectedStackMetric: event.target.value })
+    this.setState({ selectedStackRegion: event.target.value })
     this.setState({ stackedAreaQuestions: Array.from(groupByQuestion.keys()) })
   }
 
@@ -301,9 +295,11 @@ class App extends Component {
             <div className='dropdown-single'>
               <FormControl id='dropdown-stacked-area' sx={{ width: '200px' }}>
                 <InputLabel>Select a Metric</InputLabel>
-                <Select label="Select a Metric" onChange={this.handleStackAreaChange} value={this.state.selectedStackMetric}>
-                  <MenuItem value={'Prevalence'}>Prevalence</MenuItem>
-                  <MenuItem value={'Mortality Rate'}>Mortality Rate</MenuItem>
+                <Select label="Select a Region" onChange={this.handleStackAreaChange} value={this.state.selectedStackMetric}>
+                  <MenuItem value={'Midwest'}>Midwest</MenuItem>
+                  <MenuItem value={'Northeast'}>Northeast</MenuItem>
+                  <MenuItem value={'South'}>South</MenuItem>
+                  <MenuItem value={'West'}>West</MenuItem>
                 </Select>
               </FormControl>
             </div>
