@@ -54,8 +54,10 @@
   box-sizing: border-box;
 }
 #treemap-box{
-  display: flex;
-  justify-content: space-between;
+  flex: 1;
+  flex-direction: column;
+  box-sizing: border-box;
+
 }
 #stacked-barchart-box{
   display: flex;

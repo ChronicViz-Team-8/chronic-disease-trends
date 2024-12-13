@@ -157,10 +157,10 @@ class Treemap extends Component {
           .style('fill', d => regionColorScale(d.data.name))
           .style('stroke', 'white')
           .on('mouseover', (event, d) => {
-            const totalContribution = rootNode.value; 
+            const totalContribution = rootNode.value;
             const topicAbsoluteValue = d.parent.value;
-            const topicContributionPercentage = (d.parent.value / totalContribution) * 100; 
-            const regionContribution = d.value; 
+            const topicContributionPercentage = (d.parent.value / totalContribution) * 100;
+            const regionContribution = d.value;
 
             let tooltipContent = `<strong>Topic</strong>: ${d.parent.data.name}<br>`;
 
@@ -311,9 +311,12 @@ class Treemap extends Component {
             </Select>
           </FormControl>
         </div>
-        <svg id="treemap-container" width="580" height="400">
-          <g id="treemap-group"></g>
-        </svg>
+        <div className='models'>
+          <svg id="treemap-container" width="580" height="400">
+            <g id="treemap-group"></g>
+          </svg>
+        </div>
+
       </div>
     );
   }
