@@ -254,7 +254,7 @@ class App extends Component {
               </FormControl>
               <LineSelection onSelectionChange={this.handleLineChartLineChange}></LineSelection>
             </div>
-            <Typography sx={{ fontSize: 16, marginTop: 2, whiteSpace: 'pre-line', textAlign: 'center', fontWeight: 'bold' }}>
+            <Typography sx={{ fontSize: 16, whiteSpace: 'pre-line', textAlign: 'center', fontWeight: 'bold' }}>
                 {this.state.selectedLineChartDisease}
               </Typography>
             <div className='models'>
@@ -289,7 +289,7 @@ class App extends Component {
                 </Select>
               </FormControl>
             </div>
-            <Typography sx={{ fontSize: 16, marginTop: 2, whiteSpace: 'pre-line', textAlign: 'center', fontWeight: 'bold' }}>
+            <Typography sx={{ fontSize: 16, marginBottom: 1, whiteSpace: 'pre-line', textAlign: 'center', fontWeight: 'bold' }}>
               {this.state.selectedBarOption}
             </Typography>
             <div className='models' id='barchart-row'>
