@@ -65,8 +65,8 @@
   flex: 30%;
   width: 965px;
   max-width: 965px;
-  height: 430px;
-  max-height: 430px;
+  height: 495.5px;
+  max-height: 495.5px;
 }
 #barchart-row{
   display: flex;
@@ -78,8 +78,8 @@
   flex: 1;
   flex-direction: column;
   box-sizing: border-box;
-  height: 430px;
-  max-height: 430px;
+  height: 495.5px;
+  max-height: 495.5px;
 }
 .models {
   display: flex;

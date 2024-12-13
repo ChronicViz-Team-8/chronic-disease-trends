@@ -19,7 +19,7 @@ class BarChartRace extends Component {
     // Setup SVG Environment
     const margin = { top: 50, bottom: 50, right: 5, left: 60 }
     const width = 410;
-    const height = 400;
+    const height = 420;
     const innerWidth = width - margin.right - margin.left;
     const innerHeight = height - margin.top - margin.bottom;
 

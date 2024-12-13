@@ -20,7 +20,7 @@ class BarChartGender extends Component {
     // Setup SVG Environment
     const margin = { top: 50, bottom: 50, right: 130, left: 60 }
     const width = 540;
-    const height = 400;
+    const height = 420;
     const innerWidth = width - margin.right - margin.left;
     const innerHeight = height - margin.top - margin.bottom;
 

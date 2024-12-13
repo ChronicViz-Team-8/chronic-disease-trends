@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import * as d3 from 'd3';
-import { Box, FormControl, MenuItem, Select, InputLabel } from '@mui/material';
+import { Box, FormControl, MenuItem, Select, InputLabel, Typography } from '@mui/material';
 import LineSelection from './LineChartLinesSelection';
 import chronic from './cleaned_chronic_disease_indicators.csv'
 import LineChart from './lineChart';
@@ -254,6 +254,9 @@ class App extends Component {
               </FormControl>
               <LineSelection onSelectionChange={this.handleLineChartLineChange}></LineSelection>
             </div>
+            <Typography sx={{ fontSize: 16, marginTop: 2, whiteSpace: 'pre-line', textAlign: 'center', fontWeight: 'bold' }}>
+                {this.state.selectedLineChartDisease}
+              </Typography>
             <div className='models'>
               <LineChart data={this.state.lineChartData}></LineChart>
             </div>
@@ -286,6 +289,9 @@ class App extends Component {
                 </Select>
               </FormControl>
             </div>
+            <Typography sx={{ fontSize: 16, marginTop: 2, whiteSpace: 'pre-line', textAlign: 'center', fontWeight: 'bold' }}>
+              {this.state.selectedBarOption}
+            </Typography>
             <div className='models' id='barchart-row'>
               <BarChartRace data={this.state.barChartRaceData} ylabel={this.state.yAxisLabel}></BarChartRace>
               <BarChartGender data={this.state.barChartGenderData} ylabel={this.state.yAxisLabel}></BarChartGender>
@@ -303,6 +309,11 @@ class App extends Component {
                 </Select>
               </FormControl>
             </div>
+            {this.state.selectedStackRegion && (
+              <Typography sx={{ fontSize: 16, marginTop: 2, whiteSpace: 'pre-line', textAlign: 'center', fontWeight: 'bold' }}>
+                Mortality Rates for Chronic Conditions in the {this.state.selectedStackRegion}
+              </Typography>
+            )}
             <div className='models' id='stacked-area-container'>
               <StackedAreaChart data={this.state.stackedAreaData} questions={this.state.stackedAreaQuestions}></StackedAreaChart>
             </div>
