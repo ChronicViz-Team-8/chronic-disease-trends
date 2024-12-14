@@ -263,6 +263,9 @@ handleLineChartDiseaseChange = (event) => {
             </div>
             <Typography sx={{ fontSize: 16, whiteSpace: 'pre-line', textAlign: 'center', fontWeight: 'bold' }}>
                 {this.state.selectedLineChartDisease}
+                {this.state.selectedLineChartDisease === 'Prevalence of chronic obstructive pulmonary disease among adults >= 18' && (
+                  ' years'
+                )}
               </Typography>
             <div className='models'>
               <LineChart data={this.state.lineChartData} yAxisLabel={this.state.yAxisLabel2} />
@@ -298,6 +301,9 @@ handleLineChartDiseaseChange = (event) => {
             </div>
             <Typography sx={{ fontSize: 16, marginBottom: 1, whiteSpace: 'pre-line', textAlign: 'center', fontWeight: 'bold' }}>
               {this.state.selectedBarOption}
+              {this.state.selectedBarOption === 'Prevalence of chronic obstructive pulmonary disease among adults >= 18' && (
+                  ' years'
+              )}
             </Typography>
             <div className='models' id='barchart-row'>
               <BarChartRace data={this.state.barChartRaceData} ylabel={this.state.yAxisLabel}></BarChartRace>

@@ -28,7 +28,7 @@ class StackedAreaChart extends Component {
 
     // Add right after the SVG setup, where you define 'svg'
     const zoom = d3.zoom()
-      .scaleExtent([1, 8])
+      .scaleExtent([1, 20])
       .on('zoom', (e) => {
         svg.attr('transform', e.transform);
       });
