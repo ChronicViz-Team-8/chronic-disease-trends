@@ -95,11 +95,18 @@ class App extends Component {
     };
   }
 
-  handleLineChartDiseaseChange = (event) => {
-    const selectedDisease = event.target.value;
-    const question = this.getDiseaseQuestion(selectedDisease);
-    this.setState({ selectedLineChartDisease: question }, this.processLineChartData);
+handleLineChartDiseaseChange = (event) => {
+  const selectedDisease = event.target.value;
+  const question = this.getDiseaseQuestion(selectedDisease);
+
+  if (selectedDisease.includes('Prevalence')) {
+    this.setState({ yAxisLabel2: 'Prevalence Rate' });
+  } else if (selectedDisease.includes('Mortality')) {
+    this.setState({ yAxisLabel2: 'Mortality Rate' });
   }
+
+  this.setState({ selectedLineChartDisease: question }, this.processLineChartData);
+}
 
   handleLineChartLineChange = (selectedLines) => {
     this.setState({ selectedLineChartLines: selectedLines }, this.processLineChartData);
@@ -258,7 +265,7 @@ class App extends Component {
                 {this.state.selectedLineChartDisease}
               </Typography>
             <div className='models'>
-              <LineChart data={this.state.lineChartData}></LineChart>
+              <LineChart data={this.state.lineChartData} yAxisLabel={this.state.yAxisLabel2} />
             </div>
           </Box>
           <Box className='model-box' id='treemap-box' sx={{ boxShadow: 3 }}>
