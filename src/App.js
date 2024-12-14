@@ -190,9 +190,9 @@ handleLineChartDiseaseChange = (event) => {
 
     // Dynamically adjust the y-axis labels for the bar charts
     if (selection.includes('Prevalence')) {
-      this.setState({ yAxisLabel: 'Prevalence Rate' })
+      this.setState({ yAxisLabel: 'Proportion of Total Prevalence' })
     } else if (selection.includes('Mortality')) {
-      this.setState({ yAxisLabel: 'Mortality Rate' })
+      this.setState({ yAxisLabel: 'Proportion of Total Mortality Rate' })
     }
 
     const filteredData = this.state.data.filter(d => d.Question === question);
