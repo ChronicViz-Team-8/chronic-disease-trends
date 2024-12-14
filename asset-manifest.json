@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/chronic-disease-trends/static/css/main.35dc222e.css",
-    "main.js": "/chronic-disease-trends/static/js/main.fba63768.js",
-    "static/media/cleaned_chronic_disease_indicators.csv": "/chronic-disease-trends/static/media/cleaned_chronic_disease_indicators.b0b41068c67aca1f184c.csv",
+    "main.css": "/chronic-disease-trends/static/css/main.b75ca908.css",
+    "main.js": "/chronic-disease-trends/static/js/main.46bb92ae.js",
+    "static/media/cleaned_chronic_disease_indicators.csv": "/chronic-disease-trends/static/media/cleaned_chronic_disease_indicators.d1ba281db9e2567c84e7.csv",
     "index.html": "/chronic-disease-trends/index.html",
-    "main.35dc222e.css.map": "/chronic-disease-trends/static/css/main.35dc222e.css.map",
-    "main.fba63768.js.map": "/chronic-disease-trends/static/js/main.fba63768.js.map"
+    "main.b75ca908.css.map": "/chronic-disease-trends/static/css/main.b75ca908.css.map",
+    "main.46bb92ae.js.map": "/chronic-disease-trends/static/js/main.46bb92ae.js.map"
   },
   "entrypoints": [
-    "static/css/main.35dc222e.css",
-    "static/js/main.fba63768.js"
+    "static/css/main.b75ca908.css",
+    "static/js/main.46bb92ae.js"
   ]
 }
