@@ -257,6 +257,10 @@ class Treemap extends Component {
         const height = d.y1 - d.y0;
         return Math.max(Math.min(width / 5, height / 2, Math.sqrt((width * width + height * height)) / 12), 10) + "px";
       })
+      .style('visibility', d => {
+        const isAsthmaMortality = d.parent.data.name.toLowerCase().includes('asthma') && this.state.selectedMetric === 'Mortality Rate';
+        return isAsthmaMortality ? 'hidden' : 'visible';
+      })
       .text(d => this.state.selectedMetric === 'Mortality Rate'
         ? `${d.value.toFixed(1)}`
         : `${d.value.toFixed(1)}%`);
