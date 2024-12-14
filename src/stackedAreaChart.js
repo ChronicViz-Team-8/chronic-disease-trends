@@ -26,6 +26,15 @@ class StackedAreaChart extends Component {
       .select('g')
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
+    // Add right after the SVG setup, where you define 'svg'
+    const zoom = d3.zoom()
+      .scaleExtent([1, 8])
+      .on('zoom', (e) => {
+        svg.attr('transform', e.transform);
+      });
+
+    d3.select('#stream-chart').call(zoom);
+
     // Create Generators
     const stackGen = d3.stack()
       .keys(questions)
