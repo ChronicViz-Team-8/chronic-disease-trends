@@ -169,7 +169,7 @@ class Treemap extends Component {
             const topicContributionPercentage = (d.parent.value / totalContribution) * 100;
             const regionContribution = d.value;
 
-            let tooltipContent = `<strong>Topic</strong>: ${d.parent.data.name}<br>`;
+            let tooltipContent = `<strong>Topic</strong>: ${d.parent.data.name.replace('Alcohol', 'Chronic Liver Disease')}<br>`;
 
             if (this.state.selectedMetric === 'Prevalence') {
               tooltipContent += `
@@ -224,9 +224,12 @@ class Treemap extends Component {
       .attr('x', d => d.x0 + (d.x1 - d.x0) * .50)
       .attr('text-anchor', 'middle')
       .attr('font-size', d => {
+        if (d.parent.data.name === 'Asthma' && this.state.selectedMetric === 'Mortality Rate') {
+          return "6px"; 
+        }
         const width = d.x1 - d.x0;
         const height = d.y1 - d.y0;
-        return Math.max(Math.min(width / 5, height / 2, Math.sqrt((width * width + height * height)) / 12), 12) + "px";
+        return Math.max(Math.min(width / 5, height / 2, Math.sqrt((width * width + height * height)) / 12), 13) + "px";
       })
       .text(d => {
         const width = d.x1 - d.x0;
@@ -236,12 +239,17 @@ class Treemap extends Component {
           switch (d.data.name) {
             case 'Northeast': return 'N';
             case 'West': return 'W';
-            case 'Midwest': return 'MW';
+            case 'Midwest': return d.parent.data.name === 'Asthma' ? 'M' : 'MW';
             case 'South': return 'S';
             default: return d.data.name;
           }
         }
         return d.data.name;
+      })
+      .attr('dy', d => {
+        if (d.parent.data.name === 'Asthma') {
+          return '4'
+        }
       });
 
     g.selectAll(".value-label")
@@ -275,6 +283,7 @@ class Treemap extends Component {
         .replace('Chronic Obstructive Pulmonary Disease', 'COPD')
         .replace('Nutrition, Physical Activity, and Weight Status', 'Nutrition & PA')
         .replace('Cardiovascular Disease', 'CVD')
+        .replace('Alcohol', 'CLD')
       )
       .attr('text-anchor', 'middle')
       .attr("font-size", d => {
